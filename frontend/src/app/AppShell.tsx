@@ -9,6 +9,7 @@ import { useHashRoute } from "../hooks/useHashRoute";
 import { useTextSelection } from "../hooks/useTextSelection";
 import { Sidebar } from "../components/sidebar/Sidebar";
 import { CanvasPage } from "./CanvasPage";
+import { CanvasHistoryPage } from "./CanvasHistoryPage";
 import { ReviewPage } from "./ReviewPage";
 import { LibraryPage } from "./LibraryPage";
 import { SettingsPage } from "./SettingsPage";
@@ -244,9 +245,9 @@ export function AppShell() {
       api.deleteCanvas(id).then(() => {
         qc.invalidateQueries({ queryKey: ["canvases"] });
         if (route.page === "canvas" && route.canvasId === id) navigate({ page: "home" });
-      });
+      }).catch((err) => showToast(err instanceof Error ? err.message : "Could not delete that canvas"));
     },
-    [qc, route, navigate],
+    [qc, route, navigate, showToast],
   );
 
   /**
@@ -289,13 +290,14 @@ export function AppShell() {
   const content = useMemo(() => {
     if (route.page === "canvas")
       return <CanvasPage canvasId={route.canvasId} onAsk={onAsk} askBusy={askBusy} onSummarize={onSummarize} onGraphChanged={reloadGraph} />;
+    if (route.page === "canvases") return <CanvasHistoryPage onNewCanvas={newCanvas} />;
     if (route.page === "review") return <ReviewPage />;
     if (route.page === "library") return <LibraryPage />;
     if (route.page === "graph") return <GraphPage />;
     if (route.page === "explore") return <ExplorePage />;
     if (route.page === "settings") return <SettingsPage />;
     return <HomePage creating={canvases.isLoading} askBusy={askBusy} onAsk={askFromHome} onOpenSettings={() => navigate({ page: "settings" })} />;
-  }, [route, onAsk, askBusy, canvases.isLoading, onSummarize, askFromHome, navigate, reloadGraph]);
+  }, [route, onAsk, askBusy, canvases.isLoading, onSummarize, askFromHome, navigate, reloadGraph, newCanvas]);
 
   return (
     <div className="flex h-full">
@@ -311,7 +313,7 @@ export function AppShell() {
 
       <Sidebar
         activeCanvasId={route.page === "canvas" ? route.canvasId : null}
-        activePage={route.page === "canvas" ? "canvas" : route.page === "review" ? "library" : route.page}
+        activePage={route.page === "canvas" ? "canvases" : route.page}
         onOpenCanvas={openCanvas}
         onNewCanvas={newCanvas}
         onDeleteCanvas={deleteCanvas}

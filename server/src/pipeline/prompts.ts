@@ -2,11 +2,13 @@ import type { NodeEntity, LearningProfile, ThinkingMode } from "@canvas-learn/sh
 
 /**
  * Stage 1 — streamed answer with inline [[term]] markup (PRD §6.2).
- * Concise bite-sized answer; ancestor-chain context; 2–4 key terms in [[double brackets]].
+ * Substantive answer; ancestor-chain context; 2–4 key terms in [[double brackets]].
  * Ponder GENERATES explanations — prior lesson/source/canvas content is optional
  * context, never a prerequisite (spec §1, §5–§7).
  */
-export const STAGE1_SYSTEM = `You are a friendly, precise learning tutor. Answer the user's question in 80-150 words of plain prose. Do not use headings or bullet lists. Never show your reasoning or thinking steps — output only the final answer text. Always answer from your own knowledge and any context provided — never say an explanation cannot be provided or that more source material is needed.
+export const STAGE1_SYSTEM = `You are a friendly, precise learning tutor. Give a substantive explanation in roughly 180-280 words of plain prose unless a mode or learner profile below asks for a different length. Do not use headings or bullet lists. Never show your reasoning or thinking steps — output only the final answer text. Always answer from your own knowledge and any context provided — never say an explanation cannot be provided or that more source material is needed.
+
+For a normal explain request, cover the core definition, how or why it works, one concrete example or analogy, and an important consequence, limitation, or distinction when those details fit the question. Prefer useful detail over a one-paragraph dictionary definition, but do not pad a genuinely simple answer.
 
 While writing, naturally wrap the 2 to 4 most important key terms from YOUR answer in double square brackets — for example the word evaporation would be written as evaporation wrapped in double square brackets. The brackets mark clickable key terms — wrap real terms only (no punctuation inside), and use each marker at most once. Do not wrap ordinary words or whole sentences, and never use the literal placeholder word "term".
 
@@ -26,12 +28,13 @@ export function stage1Prompt(question: string, contextBlurb: string): string {
  * Stage 2 — one small JSON call producing title + follow-ups + tags (PRD FR12, tags per PRD §10).
  */
 export const STAGE2_SYSTEM = `You output ONLY a JSON object, no other text. Shape:
-{"title": "<short title, max 5 words, no trailing punctuation>", "followups": ["<question 1>", "<question 2>", "<question 3>"], "tags": ["<topic tag>", "..."]}
+{"title": "<short title, max 5 words, no trailing punctuation>", "followups": ["<question 1>", "<question 2>", "<question 3>"], "tags": ["<topic tag>", "..."], "key_terms": ["<important concept quoted from the answer>", "..."]}
 
 Rules:
 - title: a concise name for the Q&A topic (like an encyclopedia section heading, max 5 words).
 - followups: 3 natural follow-up questions a curious learner might ask next about THIS answer. Each under 12 words. No numbering.
-- tags: 0-3 lowercase single-word-or-hyphenated topic tags.`;
+- tags: 0-3 lowercase single-word-or-hyphenated topic tags.
+- key_terms: 2-4 important technical words or short concept phrases that actually occur in the answer. Quote their wording exactly, without brackets or formatting. Prefer concepts worth explaining, not ordinary words, headings, or whole sentences.`;
 
 export function stage2Prompt(question: string, answer: string): string {
   return `Question: ${question}\n\nAnswer:\n"""\n${answer.slice(0, 4000)}\n"""`;
@@ -52,7 +55,7 @@ export const STAGE3_SYSTEM = `You output ONLY a JSON object, no other text. Deci
 - "chart": for quantities/proportions. spec: {"chart_type": "donut"|"bar"|"line", "labels": ["..."], "values": [numbers]} — values must be numbers, labels same length as values, max 8 entries. Use real, well-known figures; if unsure of exact numbers, use widely accepted approximations.
 - "comparison_table": for X-vs-Y contrasts. spec: {"headers": ["Aspect", "A", "B"], "rows": [["aspect", "a fact", "b fact"], ...]} — 2-5 columns, 1-8 rows.
  - "interactive_sim": for an idea that is best felt by MOVING a knob — a physics/economics/probability/biology relationship the learner can experiment with. spec: {"sim": "projectile"|"compound_interest"|"binomial"|"pendulum"|"rc_circuit"|"logistic_growth"|"sir_model", "params": [{"key","label","min","max","step","value"}], "title": "...", "caption": "..."}. Choose the sim that fits: "projectile" (speed/angle → range & arc), "compound_interest" (rate/time/contributions → growth), "binomial" (trials/probability → outcome distribution), "pendulum" (length/gravity/damping → period & amplitude decay; use for oscillation, timing, gravity on other worlds), "rc_circuit" (voltage/resistance/capacitance → charge & discharge curves, time constant), "logistic_growth" (initial population/carrying capacity/growth rate → S-curve), "sir_model" (population/contact rate β/recovery rate γ → epidemic peak & final size, R0). Use ONLY the documented param keys for the chosen sim, sensible min/max/step, and realistic starting values.
-- "none": if no visual meaningfully helps. spec: null.
+  - "none": only for greetings, purely personal requests, or content where a diagram, chart, comparison, timeline, or interactive model would genuinely communicate nothing. Prefer a useful visual for an explanatory question whenever one can be made from the answer. spec: null.
 
 Mermaid rules: node labels may contain letters, numbers, spaces, commas, hyphens and percent signs only. Never use parentheses or quotes inside labels. Every arrow is --> and each statement is on its own line.`;
 
@@ -361,7 +364,7 @@ Break the given explanation into 2-4 short sections that best fit THIS topic. Us
 - "Mental model" — a simple way to remember it
 - "Go deeper" — an optional deeper layer or nuance
 
-Every body must carry forward facts from the given explanation — it is a reshaping of real teaching content, never a comment about the task. If the explanation somehow seems thin, extract and present whatever it does contain as the sections; NEVER write sections about missing, absent, or insufficient content. Keep each body under 45 words.`;
+Every body must carry forward the important facts from the given explanation — it is a reshaping of real teaching content, never a comment about the task. Preserve the answer's [[key term]] markers when they appear. If the explanation somehow seems thin, extract and present whatever it does contain as the sections; NEVER write sections about missing, absent, or insufficient content. Keep each body under 80 words.`;
 
 export function sectionsPrompt(question: string, answer: string): string {
   return `Question: ${question}\n\nExplanation:\n"""\n${answer.slice(0, 4000)}\n"""`;

@@ -23,6 +23,7 @@ export function rowToNode(r: any): NodeEntity {
             type: r.visual_type,
             status: r.visual_status ?? "pending",
             spec: r.visual_spec ? safeParse(r.visual_spec, null) : null,
+            ...(r.visual_error ? { error: safeParse(r.visual_error, undefined) } : {}),
           }
         : null,
     position: { x: r.position_x, y: r.position_y },
@@ -71,6 +72,7 @@ export function nodeToRow(n: NodeEntity) {
     visual_type: n.visual?.type ?? null,
     visual_status: n.visual?.status ?? null,
     visual_spec: n.visual ? JSON.stringify(n.visual.spec) : null,
+    visual_error: n.visual?.error ? JSON.stringify(n.visual.error) : null,
     position_x: n.position.x,
     position_y: n.position.y,
     width: n.width,

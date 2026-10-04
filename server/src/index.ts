@@ -1,9 +1,4 @@
-import { createApp } from "./app.js";
 import fs from "node:fs";
-
-const RAW_PORT = Number(process.env.PORT);
-const PORT = Number.isInteger(RAW_PORT) && RAW_PORT > 0 ? RAW_PORT : 8787;
-const DB_PATH = process.env.DB_PATH ?? "./data/app.db";
 
 // Minimal .env loader (no dotenv dependency): KEY=VALUE lines
 try {
@@ -15,6 +10,13 @@ try {
 } catch {
   // no .env — fine, everything has defaults
 }
+
+// Resolve configuration after loading .env. Previously PORT and DB_PATH were
+// read before the loader ran, so local configuration silently had no effect.
+const { createApp } = await import("./app.js");
+const RAW_PORT = Number(process.env.PORT);
+const PORT = Number.isInteger(RAW_PORT) && RAW_PORT > 0 ? RAW_PORT : 8787;
+const DB_PATH = process.env.DB_PATH ?? "./data/app.db";
 
 const { app } = createApp(DB_PATH);
 

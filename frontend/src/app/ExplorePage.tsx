@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { useHashRoute } from "../hooks/useHashRoute";
 
@@ -11,6 +11,7 @@ import { useHashRoute } from "../hooks/useHashRoute";
  */
 export function ExplorePage() {
   const [, navigate] = useHashRoute();
+  const queryClient = useQueryClient();
   const maps = useQuery({ queryKey: ["maps"], queryFn: api.maps });
   const fileRef = useRef<HTMLInputElement>(null);
   const [importMsg, setImportMsg] = useState<string | null>(null);
@@ -29,6 +30,7 @@ export function ExplorePage() {
         result.materials_imported && `${result.materials_imported} source${result.materials_imported === 1 ? "" : "s"}`,
       ].filter(Boolean);
       setImportMsg(parts.length ? `Imported: ${parts.join(", ")}` : "File was valid — everything in it was already here (nothing new imported)");
+      await Promise.all(["maps", "canvases", "cards", "materials", "knowledge-graph"].map((key) => queryClient.invalidateQueries({ queryKey: [key] })));
     } catch (err) {
       setImportMsg(`Couldn't import that file (${err instanceof Error ? err.message : "invalid export"})`);
     } finally {
@@ -37,24 +39,21 @@ export function ExplorePage() {
   };
 
   return (
-    <div className="h-full overflow-y-auto px-8 py-6">
-      <h1 className="text-lg font-medium text-fog-100 mb-1">Explore</h1>
-      <p className="text-xs text-fog-400 mb-6">
-        Your learning maps in one place. Ponder is local-first — there's no feed and no other people's activity to show. Sharing works by files:
-        export, send, import.
-      </p>
+    <div className="workspace-page" data-page="explore">
+      <div className="page-container">
+      <header className="page-header"><div><p className="page-eyebrow">Follow the connections</p><h1 className="page-title">Explore</h1><p className="page-description">Revisit your learning maps, discover the next question, and share your workspace as a file.</p></div></header>
 
       {/* Share row */}
       <div className="flex flex-wrap items-center gap-2 mb-6">
         <a
           href={api.exportUrl}
-          className="btn-ghost bg-ink-850 border border-ink-700 rounded-lg text-xs text-fog-200 px-3 py-1.5 hover:text-spark-400"
+          className="btn-secondary"
           title="Download your whole learning workspace (canvases, maps, cards, sources) as one JSON file"
         >
           ⬇ Export my learning map
         </a>
         <button
-          className="btn-ghost bg-ink-850 border border-ink-700 rounded-lg text-xs text-fog-200 px-3 py-1.5 hover:text-spark-400"
+          className="btn-secondary"
           onClick={() => fileRef.current?.click()}
           title="Import a ponder-learning-map.json someone sent you"
         >
@@ -75,8 +74,9 @@ export function ExplorePage() {
 
       {/* Maps */}
       {maps.isLoading && <p className="text-sm text-fog-400">Loading your maps…</p>}
+      {maps.isError && <p role="alert" className="settings-notice is-error">Could not load your learning maps. Refresh to try again.</p>}
       {maps.data && maps.data.maps.length === 0 && (
-        <div className="node-card p-6 max-w-xl">
+        <div className="empty-state max-w-xl">
           <p className="text-sm text-fog-200 mb-2">No learning maps yet.</p>
           <p className="text-xs text-fog-400 leading-relaxed">
             Open any canvas and use <span className="text-fog-200">Map</span> to decompose a topic into branches — each map appears here. When you're
@@ -101,6 +101,7 @@ export function ExplorePage() {
             </button>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

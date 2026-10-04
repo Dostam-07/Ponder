@@ -166,6 +166,22 @@ describe("canvas independence (real backend)", () => {
     expect(b[0]!.question).toMatch(/quantum computing/i);
   }, 20_000);
 
+  it("persists a clicked-term explanation as a child of the selected answer on the same canvas", async () => {
+    const canvas = await createCanvas();
+    const root = await askUntilNodeCreated(threadAsk(canvas.id, "Why is the sky blue?"));
+    const explanation = await askUntilNodeCreated({
+      ...threadAsk(canvas.id, "Explain Rayleigh scattering", root.id),
+      branch_origin: "term_chip",
+      mode: "explain",
+      context_text: "Rayleigh scattering redirects short wavelengths of sunlight in the atmosphere.",
+    });
+    expect(explanation.parent_id).toBe(root.id);
+    expect(explanation.canvas_id).toBe(canvas.id);
+    expect(explanation.branch_origin).toBe("term_chip");
+    const saved = (await graphNodes(canvas.id)).find((node) => node.id === explanation.id);
+    expect(saved).toMatchObject({ parent_id: root.id, branch_origin: "term_chip", question: "Explain Rayleigh scattering" });
+  }, 20_000);
+
   it("rejects an ask for an unknown canvas instead of falling back", async () => {
     const res = await fetch(`${base}/api/nodes/ask`, {
       method: "POST",

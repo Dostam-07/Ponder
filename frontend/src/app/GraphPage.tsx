@@ -55,15 +55,10 @@ export function GraphPage() {
   const selectedConcept = layout.concepts.find((c) => c.id === selected);
 
   return (
-    <div className="h-full overflow-y-auto home-surface">
-      <div className="max-w-4xl mx-auto px-6 py-8">
-        <div className="flex items-center gap-2.5 mb-1">
-          <GraphIcon className="w-5 h-5 ponder-mark" aria-hidden="true" />
-          <h1 className="text-lg font-semibold text-fog-100 tracking-tight">Knowledge Graph</h1>
-        </div>
-        <p className="text-sm text-fog-400 mb-5">
-          Concepts you've actually explored, connected by their real parent-child relationships.
-        </p>
+    <div className="workspace-page" data-page="graph">
+      <div className="page-container">
+        <header className="page-header"><div><p className="page-eyebrow">See the bigger picture</p><h1 className="page-title">Knowledge graph</h1><p className="page-description">The concepts you've explored, connected by the paths your curiosity took.</p></div></header>
+        {graph.isError && <p role="alert" className="settings-notice is-error">Could not load the graph. Refresh to try again.</p>}
 
         {graph.isLoading ? (
           <p className="status-text">Mapping your concepts…</p>

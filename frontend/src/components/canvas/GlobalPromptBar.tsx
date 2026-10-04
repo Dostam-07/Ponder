@@ -56,7 +56,7 @@ export function GlobalPromptBar({ onAsk, disabled, variant = "docked", placehold
 
   const shell =
     variant === "docked"
-      ? "absolute bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-10 w-[560px] max-w-[92vw]"
+      ? "absolute bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-10 w-[640px] max-w-[calc(100%_-_2rem)]"
       : "relative w-full";
 
   const hero = variant === "hero";
@@ -75,18 +75,37 @@ export function GlobalPromptBar({ onAsk, disabled, variant = "docked", placehold
         </div>
       )}
       <form
-        className={`composer-shell flex items-center gap-2 rounded-2xl shadow-2xl ${
+        className={`composer-shell rounded-2xl shadow-xl ${
           hero
-            ? "bg-ink-900/90 backdrop-blur border border-ink-600 px-4 sm:px-5 py-3.5"
-            : "bg-ink-850/95 backdrop-blur border border-ink-600 p-2"
+            ? "bg-ink-900/90 backdrop-blur border border-ink-600 p-4 sm:p-5"
+            : "bg-ink-850/95 backdrop-blur border border-ink-600 p-3"
         }`}
         onSubmit={(e) => {
           e.preventDefault();
           submit();
         }}
       >
-        {/* identity mark leads the composer (home hero) */}
-        {hero && <identity.Icon className="w-5 h-5 ponder-mark shrink-0" aria-hidden="true" />}
+        <div className="flex items-start gap-3">
+        {hero && <identity.Icon className="w-5 h-5 ponder-mark shrink-0 mt-1" aria-hidden="true" />}
+        <textarea
+          rows={hero ? 2 : 1}
+          className={`flex-1 min-w-0 w-full resize-none bg-transparent text-fog-100 placeholder:text-fog-500 focus:outline-none leading-relaxed ${hero ? "text-base sm:text-[17px] min-h-[64px]" : "text-sm min-h-[28px]"}`}
+          placeholder={placeholder}
+          aria-label={placeholder}
+          value={question}
+          maxLength={2000}
+          onChange={(e) => setQuestion(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+              e.preventDefault();
+              submit();
+            }
+          }}
+          disabled={disabled}
+          autoFocus={autoFocus}
+        />
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-ink-700/60 pt-2.5">
         {withSources && (materials.data?.length ?? 0) > 0 && (
           <button
             type="button"
@@ -98,17 +117,6 @@ export function GlobalPromptBar({ onAsk, disabled, variant = "docked", placehold
             <SourceIcon />
           </button>
         )}
-        <input
-          className={`flex-1 min-w-0 bg-transparent text-fog-100 placeholder:text-fog-400 focus:outline-none ${
-            hero ? "text-base sm:text-[17px] py-1" : "text-sm"
-          }`}
-          placeholder={placeholder}
-          aria-label={placeholder}
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          disabled={disabled}
-          autoFocus={autoFocus}
-        />
         {hero && (
           <button
             type="button"
@@ -131,26 +139,26 @@ export function GlobalPromptBar({ onAsk, disabled, variant = "docked", placehold
         />
         <button
           type="button"
-          className={`btn-ghost ${hero ? "!p-2" : ""} ${webSearch ? "!text-spark-400" : "text-fog-400"}`}
+          className={`btn-ghost flex items-center gap-1.5 !px-2 !py-1.5 ${webSearch ? "!text-spark-400 bg-spark-500/10" : "text-fog-400"}`}
           title={webSearch ? "Web search: on — answers can consult the web" : "Web search: off"}
           aria-pressed={webSearch}
           aria-label="Toggle web search"
           onClick={() => setWebSearch((v) => !v)}
         >
-          <GlobeIcon />
+          <GlobeIcon className="w-4 h-4" /><span className="hidden md:inline text-xs">Web</span>
         </button>
         <button
           type="button"
-          className={`btn-ghost ${hero ? "!p-2" : ""} ${socratic ? "!text-spark-400" : "text-fog-400"}`}
+          className={`btn-ghost flex items-center gap-1.5 !px-2 !py-1.5 ${socratic ? "!text-spark-400 bg-spark-500/10" : "text-fog-400"}`}
           title={socratic ? "Think with me: on — Ponder guides you with questions" : "Think with me — Ponder asks guiding questions instead of answering"}
           aria-pressed={socratic}
           aria-label="Toggle Socratic mode"
           onClick={() => setSocratic((v) => !v)}
         >
-          <SocraticIcon />
+          <SocraticIcon className="w-4 h-4" /><span className="hidden md:inline text-xs">Think with me</span>
         </button>
         <select
-          className={`bg-ink-800 border border-ink-600 rounded-lg text-xs text-fog-300 px-2 py-1.5 focus:outline-none hidden sm:block`}
+          className="ml-auto bg-ink-800 border border-ink-700 rounded-lg text-xs text-fog-300 px-2 py-1.5 focus:outline-none"
           value={speed}
           onChange={(e) => setSpeed(e.target.value as "fast" | "quality")}
           aria-label="Model speed"
@@ -170,7 +178,9 @@ export function GlobalPromptBar({ onAsk, disabled, variant = "docked", placehold
         >
           <SendIcon className={hero ? "w-[18px] h-[18px]" : "w-4 h-4"} />
         </button>
+        </div>
       </form>
+      {hero && <p className="mt-2.5 text-center text-[11px] text-fog-500">Enter to ask · Shift + Enter for a new line · Visuals only when you choose them</p>}
 
       {pickerOpen && (
         <div className="absolute bottom-full mb-2 left-0 z-30 popover-surface p-2 w-72" role="dialog" aria-label="Choose a study source">

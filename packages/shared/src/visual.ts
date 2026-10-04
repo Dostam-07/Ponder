@@ -1,9 +1,10 @@
 import { z } from "zod";
 
-/** Visual types the LLM may choose from (PRD §4.2). `illustration` is deferred to P6-stretch but kept in the schema. */
+/** Visual types supported by the canvas. Pictures are generated only on demand. */
 export const VisualType = z.enum([
   "cycle_diagram",
   "flowchart",
+  "image",
   "illustration",
   "chart",
   "comparison_table",
@@ -49,6 +50,16 @@ export const IllustrationSpec = z.object({
   style: z.string().max(80).optional(),
 });
 export type IllustrationSpec = z.infer<typeof IllustrationSpec>;
+
+/** A generated picture stored as a data URL so it survives refresh and export. */
+export const ImageSpec = z.object({
+  data_url: z.string().regex(/^data:image\/[a-zA-Z0-9.+-]+;base64,[A-Za-z0-9+/]+={0,2}$/, "Expected a base64 image data URL"),
+  media_type: z.string().startsWith("image/").max(80),
+  prompt: z.string().max(8000),
+  alt: z.string().min(1).max(500),
+  model: z.string().min(1).max(200),
+});
+export type ImageSpec = z.infer<typeof ImageSpec>;
 
 export const ChartType = z.enum(["donut", "bar", "line"]);
 export type ChartType = z.infer<typeof ChartType>;
@@ -109,6 +120,7 @@ export const VisualSpecSchemas = {
   cycle_diagram: DiagramSpec,
   flowchart: DiagramSpec,
   timeline: DiagramSpec,
+  image: ImageSpec,
   illustration: IllustrationSpec,
   chart: ChartSpec,
   comparison_table: ComparisonTableSpec,
@@ -116,10 +128,15 @@ export const VisualSpecSchemas = {
   none: NoneSpec,
 } as const;
 
+export const PictureErrorCode = z.enum(["credits_required", "key_required", "key_rejected", "model_unavailable", "rate_limited", "provider_unavailable", "no_image"]);
+export type PictureErrorCode = z.infer<typeof PictureErrorCode>;
+
 export const VisualBlock = z.object({
   type: VisualType,
   status: VisualStatus,
   spec: z.unknown(),
+  /** Safe, actionable picture failure metadata, retained across refresh/export. */
+  error: z.object({ message: z.string().max(600), code: PictureErrorCode.optional() }).optional(),
 });
 export type VisualBlock = z.infer<typeof VisualBlock>;
 

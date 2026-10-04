@@ -98,7 +98,7 @@ export function ReviewPage() {
   // ---- knowledge-card review (spec §10) ----
   if (!nodeFlow && card) {
     return (
-      <div className="h-full flex flex-col items-center justify-center px-6 dot-grid">
+      <div className="h-full overflow-y-auto flex flex-col items-center justify-center px-6 py-16 lg:py-8 dot-grid" data-page="review">
         <p className="text-xs text-fog-400 mb-2">
           Knowledge card {index + 1} of {cards.length}
         </p>
@@ -143,7 +143,7 @@ export function ReviewPage() {
   if (!node) return null;
   const segments = revealed ? parseAnswerSegments(node.answer_text) : [];
   return (
-    <div className="h-full flex flex-col items-center justify-center px-6 dot-grid">
+    <div className="h-full overflow-y-auto flex flex-col items-center justify-center px-6 py-16 lg:py-8 dot-grid" data-page="review">
       <p className="text-xs text-fog-400 mb-2">
         Card {index + 1} of {cards.length + nodes.length} · {node.title || node.question.slice(0, 40)}
       </p>
@@ -190,5 +190,5 @@ function GradeButton({ label, onClick, className }: { label: string; onClick: ()
 }
 
 function Centered({ children }: { children: React.ReactNode }) {
-  return <div className="h-full flex items-center justify-center">{children}</div>;
+  return <div className="h-full overflow-y-auto flex items-center justify-center px-5 py-16 lg:py-8" data-page="review">{children}</div>;
 }

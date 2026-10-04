@@ -25,11 +25,12 @@ export function LibraryPage() {
   ];
 
   return (
-    <div className="h-full overflow-y-auto px-8 py-6">
-      <h1 className="text-lg font-medium text-fog-100 mb-3">Library</h1>
+    <div className="workspace-page" data-page="library">
+      <div className="page-container">
+      <header className="page-header"><div><p className="page-eyebrow">Ideas worth keeping</p><h1 className="page-title">Library</h1><p className="page-description">Your saved explanations, knowledge cards, and source material, together.</p></div></header>
 
       {/* lightweight tabs (spec §11) */}
-      <div className="flex gap-1 mb-5" role="tablist" aria-label="Library sections">
+      <div className="flex flex-wrap gap-2 mb-6" role="tablist" aria-label="Library sections">
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -45,6 +46,8 @@ export function LibraryPage() {
         ))}
       </div>
 
+      {(tab === "saved" && saved.isError || tab === "cards" && cards.isError || tab === "sources" && materials.isError) && <p role="alert" className="settings-notice is-error">Could not load this part of your library. Refresh to try again.</p>}
+      {(tab === "saved" && saved.isPending || tab === "cards" && cards.isPending || tab === "sources" && materials.isPending) && <p className="status-text py-8">Opening your library…</p>}
       {/* ---- saved ideas (from node bookmark) ---- */}
       {tab === "saved" && (
         <>
@@ -121,6 +124,7 @@ export function LibraryPage() {
           </div>
         </>
       )}
+      </div>
     </div>
   );
 }

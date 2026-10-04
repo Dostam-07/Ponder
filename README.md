@@ -10,7 +10,7 @@ challenge, practice, and remember — all on an infinite canvas that grows with 
 
 [Features](#-features) · [Quick start](#-quick-start) · [How it works](#-how-it-works) · [Architecture](#%EF%B8%8F-architecture) · [Roadmap](#%EF%B8%8F-roadmap)
 
-![tests](https://img.shields.io/badge/tests-195%20passing-brightgreen) ![local](https://img.shields.io/badge/local--first-SQLite%20%2B%20Ollama-blueviolet) ![llm](https://img.shields.io/badge/LLMs-Ollama%20%2B%20OpenRouter%20free%20tier-green)
+![tests](https://img.shields.io/badge/tests-306%20passing-brightgreen) ![local](https://img.shields.io/badge/local--first-SQLite%20%2B%20Ollama-blueviolet) ![llm](https://img.shields.io/badge/LLMs-Ollama%20%2B%20OpenRouter-green)
 
 </div>
 
@@ -26,6 +26,10 @@ challenge, practice, and remember — all on an infinite canvas that grows with 
 | ![Knowledge graph built from real exploration](docs/screenshots/knowledge-graph.png) | ![Home in dark mode](docs/screenshots/home-dark.png) |
 | **Canvas — light mode** | **Library — saved ideas, cards, sources** |
 | ![Canvas in light mode](docs/screenshots/canvas-light.png) | ![Library](docs/screenshots/library.png) |
+| **Settings — AI connections and models** | **Appearance — choose your workspace** |
+| ![Settings with masked OpenRouter key, picture model, and local model controls](docs/screenshots/settings-light.png) | ![Light and dark theme previews and workspace icons](docs/screenshots/settings-appearance.png) |
+| **Canvas history — grid view** | **Canvas history — list view** |
+| ![Saved canvas cards with search, edit, rename, and delete actions](docs/screenshots/canvas-history.png) | ![Compact canvas history list with per-canvas actions](docs/screenshots/canvas-history-list.png) |
 
 *Every screenshot is captured from a real running instance — no mock data anywhere in Ponder.*
 
@@ -43,12 +47,13 @@ Most AI tools stop at the answer. Ponder treats the answer as a starting point:
 ## ✨ Features
 
 ### Conversation & exploration
-- **Home launchpad** — "What are you curious about?", a large composer (web-search toggle, Socratic *Think with me* toggle, Fast/Quality selector), 6 real example prompts, and a capability strip. Every question started from Home opens a **brand-new canvas + conversation** — never appended to an existing one; in-canvas questions stay in that canvas with full thread context.
-- **Staged AI pipeline** per question — answer streams token-by-token with clickable **key-term chips**; auto-title + suggested follow-ups; then an automatic **visual** (Mermaid diagram, chart, comparison table, timeline — or a manipulable **interactive simulation** with live sliders when the idea is about a physics, economics, or probability relationship).
-- **Visualize on demand** — every completed answer has a *Visualize* action: a pulsing skeleton loader appears in the visual slot the instant you click; on success the real rendered diagram/chart/table/simulation takes its place and persists on the node (survives refresh); on failure the actual error message + a *Retry visual* action is shown — repeated clicks are deduped to one in-flight request, and a failed generation never masquerades as "no visual fit this content".
+- **Home launchpad** — "What are you curious about?", a multiline composer (web-search toggle, Socratic *Think with me* toggle, Fast/Quality selector), 6 real example prompts, and a capability strip. **Enter** asks; **Shift + Enter** adds a line. Every question started from Home opens a **brand-new canvas + conversation** — never appended to an existing one; in-canvas questions stay in that canvas with full thread context.
+- **Staged AI pipeline** per question — answer streams token-by-token with **highlighted key concepts**, auto-title, suggested follow-ups, and teaching enhancements. Visuals are created only after an explicit click, keeping ordinary explanations free of visual-generation latency.
+- **Click a word, understand the idea** — important words and phrases are highlighted directly within explanations. Click or tap one, or focus it and press Enter, to open a connected explanation card on the same canvas. The branch uses the surrounding passage and any attached source as context. Clicking the same term again returns to its existing explanation; a failed explanation can be retried. Highlights work in plain prose and formatted sections, preserve bold/italic text, and survive refresh through saved key-term metadata.
+- **Visuals on demand** — every completed answer has two actions: *Diagram* creates a Mermaid diagram, chart, table, timeline, or interactive simulation; *Picture* generates an engaging educational illustration through OpenRouter's Image API. Both show loading and retry states, persist on the node, and survive refresh and JSON export/import. Repeated clicks are deduped to one in-flight request, and failed regeneration preserves a previously good visual. Pictures require an OpenRouter key and image-model credits; diagrams continue to support local Ollama.
 - **Provenance on every answer** — when a canvas studies a source, each completed answer is audited: *from your source* (with a verbatim quote), *added context* (web), or *uncertain* — badged on the card and in the Source Explorer. Never invented.
 - **Automatic conversation naming** — each canvas is titled from its first real question (AI heading when available, otherwise a cleaned version of the question) the moment the answer settles; follow-ups never rename it, so titles are stable and meaningful in history.
-- **Branching everywhere** — term chips, follow-up boxes, suggested questions, directional `+` buttons, and the global prompt bar all create child nodes on the canvas.
+- **Branching everywhere** — highlighted concepts, follow-up boxes, suggested questions, directional `+` buttons, and the global prompt bar all create child nodes on the canvas.
 - **Thinking modes** — Explain, Research (with web retrieval), Socratic (*Think with me*), Challenge (attack the reasoning), Compare, and *Explain it like…* styles that change actual model behavior.
 
 ### Thinking surfaces
@@ -73,8 +78,13 @@ Most AI tools stop at the answer. Ponder treats the answer as a starting point:
 
 ### Local-first foundations
 - **Your machine, your data** — SQLite file on disk, no accounts, no telemetry. The API binds `127.0.0.1` only.
-- **Free LLMs** — 20+ OpenRouter free-tier models discovered live and preferred automatically, with local Ollama as a resilient fallback (failover, rate-limit cooldowns, streaming-safe `<think>` stripping).
-- **Multi-canvas sidebar** with rename/delete, streak 🔥 / stars ⭐, full JSON export/import, and deep links. Titles update live as a conversation gets named, and persist across refresh and restart.
+- **Free text models** — OpenRouter free-tier models discovered live and preferred automatically, with local Ollama as a resilient fallback (failover, rate-limit cooldowns, streaming-safe `<think>` stripping). Image generation uses separate model credits.
+- **Connection settings** — add, replace, test, or remove your OpenRouter key in the app; choose a picture model and whether to prefer free cloud text models. Changes apply immediately and persist across server restarts.
+- **Local model picker** — separate Fast and Quality selectors show models actually installed in Ollama, with refresh, effective configuration, and environment-override details.
+- **Organized Settings** — AI & connections, Appearance, Voice & audio, and Data & backups; instant light/dark previews, workspace icons, voice preview, portable exports, and local snapshots. Appearance and audio preferences stay in this browser.
+- **Local backup & restore** — consistent SQLite snapshots, backup history, validation before restore, and an automatic safety snapshot of the current database.
+- **Workspace search** — search questions, answers, titles, and key terms across local canvases; selecting a result opens its canvas and focuses the matching answer.
+- **Canvas history** — the sidebar's **Canvas** item opens all saved explorations, newest updates first, with title search, answer counts, and dates. Switch between **Grid** cards and a compact **List**; your view choice is remembered in this browser. Each canvas has **Edit** to open its board, **Rename** with inline Save/Cancel, and **Delete** with confirmation. Choose a title to reopen it; the **Canvases** breadcrumb returns to history. The sidebar also supports recent-canvas shortcuts, rename/delete, streak 🔥 / stars ⭐, full JSON export/import, and deep links.
 - **Explore** — every thinking map you've built, in one place. Sharing is local-first and real: **export your whole workspace** (canvases, answers, maps, concept links, cards, sources) as one JSON file, send it anywhere, and **import** it on another machine — idempotent, no accounts, no cloud. There is deliberately no community feed; the honest empty state says so.
 - **Mobile** — composer-first on small screens: drawer sidebar, a single scrollable canvas toolbar, safe-area-aware input bar, and pinch/pan canvas that still auto-frames new answers.
 
@@ -85,16 +95,54 @@ Most AI tools stop at the answer. Ponder treats the answer as a starting point:
 ```bash
 git clone <your-repo-url> ponder
 cd ponder
-npm install
+npm ci --include=optional
 npm run dev        # API on 127.0.0.1:8787 + Vite on 5173 (auto-increments if busy)
 ```
 
-Open the printed Vite URL and ask your first question. First run auto-creates your first canvas.
+Open the printed Vite URL. For local generation, start Ollama and install the default models:
+
+```bash
+ollama pull llama3.2:3b
+ollama pull gemma3:4b
+```
+
+Or connect OpenRouter in **Settings → AI & connections**. Ask your first question from Home; Ponder creates a new canvas for it.
+
+> **Windows / WSL note:** `node_modules` contains native binaries for esbuild,
+> Rollup, and SQLite. Do not copy `node_modules` between Windows and WSL/Linux.
+> If you see an error mentioning `@esbuild/linux-x64`, `@esbuild/win32-x64`, or
+> a missing `@rollup/rollup-*` package, stop the dev servers, remove the
+> installation, and reinstall from the environment where you will run Ponder:
+>
+> ```powershell
+> # PowerShell, from the project root
+> Remove-Item -Recurse -Force node_modules, frontend/node_modules, server/node_modules, packages/shared/node_modules -ErrorAction SilentlyContinue
+> npm ci --include=optional
+> npm run dev
+> ```
+>
+> In WSL/Linux, run the same cleanup with `rm -rf` and then run `npm ci` there.
+> Keep separate installs for Windows and WSL even when the repository is stored
+> in a shared OneDrive folder.
 
 > **Port 8787 already in use?** (e.g. a second copy of the repo, or a previous instance still running) The server detects the conflict at startup, prints which process holds the port, and exits cleanly — stop that process and run again. It never crashes mid-run with a bare `EADDRINUSE` trace.
 
 <details>
-<summary><strong>Optional: OpenRouter free models (recommended)</strong></summary>
+<summary><strong>Optional: connect OpenRouter and enable pictures</strong></summary>
+
+1. Open **Settings → AI & connections**.
+2. Get a key at [openrouter.ai/keys](https://openrouter.ai/keys), paste it into **OpenRouter API key**, and click **Save connection**.
+3. Click **Test connection** to check authentication without generating content.
+4. Keep the default **Picture model** (`google/gemini-2.5-flash-image`) or enter another OpenRouter Image API model ID, then save.
+5. On a completed answer, click **Picture** to generate an illustration, or **Diagram** for a diagram/chart/table/simulation.
+
+With a key present, free text models are preferred by default. Pictures require image-model credits. Ordinary questions never request a visual automatically.
+
+If a picture reports **insufficient credits**, fund the OpenRouter account that owns the configured key (or save a funded key in Settings). The card provides **Add credits**, **Check API key**, and **Retry picture** controls. Authentication checks validate the key; they do not guarantee a funded image balance. Credit failures preserve existing visuals, and a failed picture's guidance remains available after refresh.
+
+Settings changes take effect immediately. Leave the API-key field empty to keep the current key; **Remove key** disables OpenRouter, including environment fallback. If an environment key exists, **Use environment key** restores that fallback.
+
+For environment-based setup instead:
 
 ```bash
 cp .env.example .env
@@ -102,10 +150,10 @@ cp .env.example .env
 
 ```env
 OPENROUTER_API_KEY=sk-or-...   # free key at openrouter.ai/keys
+OPENROUTER_IMAGE_MODEL=google/gemini-2.5-flash-image
 ```
 
-With a key present, free models are preferred automatically (`CANVAS_PREFER_OPENROUTER=true` is the default).
-Without it, everything runs on Ollama.
+Restart the server after editing `.env`. Saved OpenRouter settings take precedence over these environment defaults; text and diagrams also work with local Ollama.
 
 </details>
 
@@ -113,18 +161,33 @@ Without it, everything runs on Ollama.
 <summary><strong>Optional: model overrides & Docker</strong></summary>
 
  ```bash
- CANVAS_FAST_MODEL=llama3.2:3b   # stage 1/2 fallback (defaults shown — chat-verified on this machine)
- CANVAS_QUALITY_MODEL=gemma3:4b  # stage 3 fallback
+  CANVAS_FAST_MODEL=llama3.2:3b   # overrides the saved Fast preference
+  CANVAS_QUALITY_MODEL=gemma3:4b  # overrides the saved Quality preference
  ```
 
 Docker: `docker compose up` (Ollama expected on the host at `host.docker.internal:11434`).
 
 </details>
 
+### Settings and persistence
+
+| Setting | Configuration precedence |
+|---|---|
+| OpenRouter API key | Saved Settings value → `OPENROUTER_API_KEY`; Remove key explicitly disables fallback |
+| Picture model | Saved Settings value → `OPENROUTER_IMAGE_MODEL` → `google/gemini-2.5-flash-image` |
+| Prefer free cloud text | Saved Settings value → `CANVAS_PREFER_OPENROUTER` → `true` |
+| Local Fast / Quality models | `CANVAS_FAST_MODEL` / `CANVAS_QUALITY_MODEL` → saved installed model → `llama3.2:3b` / `gemma3:4b` |
+
+OpenRouter and local model settings live in SQLite and survive restart. Appearance, workspace icon, and audio preferences use this browser's local storage.
+
+**Keys and exports:** saved OpenRouter keys are stored **unencrypted** in the local database. API responses return only connection metadata and a masked key hint. Workspace JSON exports exclude connection keys; full database backups include saved keys and server settings.
+
+**Data & backups:** the default database is `server/data/app.db`, with snapshots in `server/backups/` (gitignored). Settings displays the actual storage paths. **Back up now** uses SQLite's online backup API; restore validates the snapshot and creates a safety backup before replacing the database. Set `CANVAS_BACKUP_EVERY_HOURS=24` for optional daily local snapshots; scheduling is off by default.
+
 ## How it works
 
-1. **Ask** — type in the composer. The 3-stage pipeline streams an answer with term chips, then titles, follow-ups, and a visual (or a manipulable simulation).
-2. **Branch** — click a term chip, a suggested follow-up, or select any text → *Ask Ponder*.
+1. **Ask** — type in the composer. The answer streams with highlighted concepts, then titles and follow-ups. Click *Diagram* or *Picture* on a completed answer when you want a visual.
+2. **Branch** — click a highlighted word or phrase for its explanation in a connected card. You can also choose a suggested follow-up or select any text → *Ask Ponder*.
 3. **Ground** — attach sources (text/URL/PDF); answers get provenance, and the **Source Explorer** audits each one.
 4. **Think** — flip on **Think with me** (Socratic), **Challenge**, or **Research**; open the **Thinking Map**, **Evidence Board**, or **Knowledge Graph**.
 5. **Practice** — *Practice this* on any node; *Test me* for a full exam; *Recall* to explain it back; **🎧 Recap** to listen. Exam & recall grades feed FSRS so weak concepts resurface.
@@ -154,13 +217,13 @@ Docker: `docker compose up` (Ollama expected on the host at `host.docker.interna
   │  └─ src/lib/          api client (SSE streaming), inline markdown, prefs, ask routing, viewport math,
   │                       wheel/zoom isolation, deterministic simulation math, speech text-cleaning,
   │                       concept matching
- ├─ scripts/             one-off screenshot capture for this README
+ ├─ scripts/             real-app screenshot capture + desktop/mobile smoke checks
  └─ docs/screenshots/    real captures of the running app
  ```
 
-**LLM routing:** every stage tries OpenRouter **free models first** (catalog discovered live from `/api/v1/models`, refreshed every 10 min; round-robin; 429 → cooldown, 403/daily-limit → session skip), then falls back to the configured local Ollama model. `model_used` on each node records what actually answered.
+**LLM routing:** by default, text and diagram generation try OpenRouter **free models first** (catalog discovered live from `/api/v1/models`, refreshed every 10 min; round-robin; 429 → cooldown, 403/daily-limit → session skip), then fall back to the configured local Ollama model. Turn off that preference in Settings to use local models for text and diagrams. `model_used` on each node records what actually answered. On-demand pictures use the separate OpenRouter Image API and the configured picture model; generated image bytes and model attribution are stored locally in the visual spec. Image-bearing imports accept up to 64 MB.
 
-**Streaming:** the ask endpoint is SSE over `fetch` ReadableStream — events: `node_created`, `delta`, `reset` (failover restarts), `stage2`, `visual_status`, `visual`, `done`, `error`, `canvas_titled` (conversation auto-named). `stage2` is emitted the moment the answer settles, so the composer unlocks without waiting for the post-answer enhancements (gaps/sections/visual), which can take minutes on slow local models. The client applies events to an optimistic node store, so reloads mid-generation degrade gracefully.
+**Streaming:** the ask endpoint is SSE over `fetch` ReadableStream — events: `node_created`, `delta`, `reset` (failover restarts), `stage2`, `done`, `error`, `canvas_titled` (conversation auto-named). `stage2` is emitted the moment the answer settles, so the composer unlocks without waiting for gaps or sections. Regular questions never generate visuals. A Source Explorer *Visualize* click explicitly opts in to diagram generation for its new concept node (`visual_status` / `visual` events); card *Diagram* and *Picture* actions use `POST /api/visual`. The client applies events to an optimistic node store, so reloads mid-generation degrade gracefully.
 
 ## Verify & test
 
@@ -168,7 +231,20 @@ Docker: `docker compose up` (Ollama expected on the host at `host.docker.interna
 curl http://127.0.0.1:8787/api/health   # {"ok":true,"ollama_reachable":true,...}
 npm run typecheck                       # all three packages
 npm test                                # vitest suites across server + frontend
+npm run build                           # shared types, server, and frontend
 ```
+
+With the dev servers running and Chrome or Edge installed:
+
+```bash
+node scripts/capture-screenshots.mjs
+```
+
+This captures the real UI and checks desktop/mobile layouts, canvas history navigation, Settings tab and theme keyboard navigation, masked key controls, and uncaught browser errors. It uses an isolated browser profile and Node's built-in WebSocket, so no Puppeteer install is needed. Set `CHROME_PATH` for another browser location and `APP_URL` if Vite selected a different port. Canvas screenshots use an existing exploration. Use `node scripts/capture-screenshots.mjs --history-only` to check grid/list views, saved view preferences, navigation, search, and the empty-history state. Rename, delete confirmation, cancellation, and error-handling checks use isolated browser fixtures, preserving your saved workspace.
+
+Use `node scripts/capture-screenshots.mjs --terms-only` for the inline-concept interaction check. It uses isolated browser fixtures and intercepted ask responses to verify keyboard activation, parent/source context, and repeat-click reuse without changing your saved workspace or making model-generation requests. README screenshots are captured only from real workspace data.
+
+Use `node scripts/capture-screenshots.mjs --picture-errors-only` to verify credit guidance, billing/settings links, persisted picture failures, explicit retry, and mobile layout with isolated browser fixtures; no image-generation credits are spent by this check.
 
 ## 🗺️ Roadmap
 
@@ -179,50 +255,32 @@ Ponder's loop: **Question → Conversation → Context → Branch → Visualize 
 - [x] **Source-grounded research workspace** — text/URL/file (incl. PDF) sources attached to a canvas, AI summaries + extracted concepts, per-answer provenance (*from your source* with verbatim quote / *added context* / *uncertain*), auditable Source Explorer.
 - [x] **Artifact generation** — study guides, research briefs, timelines, flashcard decks from a canvas's real Q&A; decks import into spaced review idempotently.
 - [x] **Concept extraction from materials** — source concepts as interactive chips: explain (grounded in that source) / visualize / practice (auto-unlocks once a node exists).
-- [x] **Interactive simulations** — projectile motion, compound interest, binomial distribution; the LLM picks the sim + starting params, but the picture is computed by deterministic client math, so sliders always work.
+- [x] **Interactive simulations** — projectile motion, compound interest, binomial distribution, pendulum, RC circuit, logistic growth, and SIR epidemic dynamics. The LLM picks the simulation and starting parameters; deterministic client math computes the curves. Numerical tests cover physical relationships, boundary conditions, and stability.
 - [x] **Audio learning** — read-aloud (Web Speech TTS) + on-demand spoken **Recap** of a canvas.
 - [x] **Spaced-review integration** — exam results and recall grades feed FSRS per knowledge-graph concept; due concepts resurface in Review.
 - [x] **Explore/Discover (local-first)** — all your learning maps in one place; whole-workspace JSON export/import as the sharing mechanism; honest empty state, no fake community.
 - [x] **Mobile layout polish** — composer-first: drawer sidebar, scrollable canvas toolbar, safe-area-aware composer, pinch/pan canvas.
 - [x] **Canvas stability & correct visual generation** — answer text sizes to content with wheel/zoom isolation (scrolling over long answers scrolls the text, never zooms the canvas); on-demand *Visualize* with skeleton → visual / error + retry lifecycle and click dedupe; honest LLM-failure contract across all structured generation (no masked failures, no fake "none", shape-repaired model output, crash-safe route validation) — ADR-008.
+- [x] **Click-only diagrams and pictures** — separate Diagram and Picture actions, persisted image bytes and model attribution, explicit loading/retry states, and preservation of successful visuals during failed regeneration.
+- [x] **OpenRouter connection settings** — write-only saved key, redacted status, authentication check, editable picture model, and immediate routing updates.
+- [x] **Model picker in Settings** — live Ollama discovery, separate saved Fast/Quality roles, refresh, unavailable-model handling, and visible environment precedence.
+- [x] **Local backup and restore** — consistent SQLite snapshots, metadata/history, optional scheduled snapshots, validated restore, and a pre-restore safety backup.
+- [x] **Global workspace search** — local search across questions, answers, titles, and key terms, with canvas-and-node navigation.
+- [x] **Canvas history** — saved explorations with grid/list views, search, dates, answer counts, editing, inline rename, and confirmed deletion from the Canvas navigation item.
+- [x] **Highlighted-word explanations** — inline concept links in prose and sections, metadata recovery when markers are missing, contextual child cards, and reuse of existing explanations.
+- [x] **Workspace UI refresh** — grouped Settings, multiline composer, clearer sidebar navigation, consistent page surfaces, responsive layouts, and light/dark theme previews.
 
 ### Planned Improvements
 
-Everything below is **not yet implemented** — an item is marked complete only when its implementation and tests exist and have been verified.
+**Large-canvas scaling benchmarks** — off-screen culling and zoom-level simplification are implemented. Further work is to measure scaling on real large canvases and use those results to guide rendering and update optimizations:
 
-**A. More deterministic simulations** — expand the simulation library (currently projectile motion, compound interest, binomial distribution) with additional interactive, scientifically accurate simulations:
-
-- **Pendulum** — periodic motion, angular displacement, and the relevant physical parameters (length, gravity, damping).
-- **RC circuit** — capacitor charging and discharging over time.
-- **Logistic growth** — population growth under a carrying-capacity constraint.
-- **SIR epidemic model** — susceptible / infected / recovered population dynamics.
-
-The architecture follows ADR-003 strictly: the LLM selects the appropriate simulation and proposes initial parameters; deterministic client-side math computes the state and renders the visualization. Each simulation ships with mathematically correct, unit-tested calculations — parameter ranges, units, boundary conditions, and numerical stability verified — and is not considered complete until its implementation and tests exist. The LLM never invents simulation outputs or computes animation frames.
-
-**B. Global search across the learning map** — search across all local canvases from the sidebar, covering questions, answers, and the terms/text contained in canvas nodes. Results are clearly labeled with their source canvas; selecting one opens the corresponding canvas, navigates to the matching node, and focuses it using the existing pan-and-zoom behavior. Search stays entirely local, using the application's existing data — no cloud search service, account system, or new infrastructure.
-
-**C. Local backup and restore** — a reliable workflow for the single `app.db` database file:
-
-- A **Back up now** action; backups saved to a clearly documented local backup folder, with optional scheduled local snapshots.
-- A backup history with timestamps and metadata, and a clear one-click restore of a selected backup.
-- Reliability contract: consistent backups via an appropriate SQLite backup mechanism (never a blind copy of a live database), a backup validated before restore, a safety backup of the current database taken before any restoration, and safe handling of shutdown, connections, rollback, and restart.
-- All operations are local. The feature is considered done only when it works and has been tested.
-
-**D. Model picker in Settings** — select the preferred fast and quality models directly in the Settings UI:
-
-- The list comes from live Ollama discovery — models Ollama actually reports as installed, never hardcoded names — with separate selections for the fast and quality roles, persisted locally across restarts, refreshable on demand, and graceful handling of unavailable models.
-- **Configuration precedence (mandatory):** `CANVAS_FAST_MODEL` overrides the saved fast-model preference when set; `CANVAS_QUALITY_MODEL` overrides the saved quality-model preference when set; when an env var is unset, the locally saved preference (where valid) is used, followed by the existing documented fallback.
-- Settings makes the *effective* configuration visible, so a user can tell when an environment variable is overriding their selection.
-
-**E. Large-canvas performance** — improve performance for canvases with many nodes (every card currently renders at full fidelity regardless of visibility):
-
-- Off-screen node culling, level-of-detail rendering when zoomed far out, efficient viewport-based rendering and updates, and fewer unnecessary React re-renders / expensive recalculations.
+- Benchmark node counts, frame time, rendering cost, and responsiveness before claiming additional performance gains.
 - Must preserve: correct canvas coordinates, stable pan-and-zoom, node state / conversation history / branches / persisted content, usability of selected or actively edited nodes, and search navigation, simulations, visualizations, and canvas auto-focus.
-- No performance improvement is claimed without measurements on actual large canvases.
+- Preserve usable full-detail views for selected and actively streaming answers while simplifying the surrounding map.
 
 ### Deliberately Deferred
 
-**A. Illustration rendering (ADR-005)** — the illustration schema is complete (scene descriptions, labeled elements, captions, style information) and persisted specifications round-trip correctly. However, **no illustration renderer is exposed**: there are no placeholder graphics and no nonfunctional illustration controls, and the Stage-3 visual-generation prompt does not offer illustration as an available output type — supported diagrams are used for spatial or structural explanations instead. Implementation resumes only when a renderer can produce genuinely illustration-quality results, verified against real persisted illustration specifications — never as a basic icon-placement approximation.
+**A. Legacy SVG scene composition (ADR-005)** — legacy `illustration` specs (scene descriptions and positioned icons) still round-trip and show their preserved data without a placeholder drawing. The new *Picture* action instead uses a real image-generation model and stores a separate `image` spec; it does not depend on the deferred icon-scene composer.
 
 **B. Lecture capture and transcription (ADR-006)** — out of scope until a suitable local speech-to-text (STT) model is available. No cloud transcription as a substitute; no mock transcripts or simulated recording functionality. The existing read-aloud and recap capabilities are retained. This is revisited only after a local model has been evaluated for accuracy, latency, hardware requirements, and privacy.
 
@@ -242,7 +300,7 @@ The architecture follows ADR-003 strictly: the LLM selects the appropriate simul
 - **ADR-006:** **lecture capture / transcription stays out of scope** until a local STT model meets accuracy, latency, hardware, and privacy requirements. No recording, no transcription pipeline, no cloud substitute — and no placeholder results. The existing audio-out features (read-aloud, 🎧 recap) are retained and unaffected. (Composer voice *input* is a separate, shipped typing convenience and is not lecture capture.)
 - **ADR-007:** import/export validates schema versions: legacy v1 (no version field) and v2 files import; unknown versions are rejected with a clear error rather than mis-imported; existing data is never overwritten (id collisions skip). The JSON file is the only sharing mechanism — no backend, no accounts, no cloud.
 - **ADR-008:** **visual generation failures are real, never masked.** `generateVisual` returns a `none` block only when a model actually answered and chose none; provider/network failures and unparseable output throw actionable errors (route → 502 with the reason, pipeline → `visual_status failed` without failing the completed answer). Model output is shape-repaired before validation (lenient JSON extraction + one level of unwrapping + the flattened-spec quirk, e.g. `{"type":"flowchart","mermaid":"…"}`, observed live from gemma3:4b). A node with no usable visual persists an honest `failed` block after a failed attempt; a previously good visual is never destroyed by a failed regeneration.
-- **Local model defaults** (`llama3.2:3b` fast / `gemma3:4b` quality) are chat-verified on this CPU-only machine — `qwen2.5:7b`/`14b` hang indefinitely on Ollama's chat path here (diagnosed 2026-10-03). Override with `CANVAS_FAST_MODEL` / `CANVAS_QUALITY_MODEL` env vars; at ~3 tok/s a full answer streams in about 1–2 minutes, and the local hard cap (10 min) is sized for that.
+- **Local model defaults** (`llama3.2:3b` fast / `gemma3:4b` quality) are chat-verified on this CPU-only machine — `qwen2.5:7b`/`14b` hang indefinitely on Ollama's chat path here (diagnosed 2026-10-03). Pick installed models in Settings, or override with `CANVAS_FAST_MODEL` / `CANVAS_QUALITY_MODEL`; at ~3 tok/s a full answer streams in about 1–2 minutes, and the local hard cap (10 min) is sized for that.
 - Everything runs on localhost; the API binds `127.0.0.1` only, and the OpenRouter key never leaves your machine except to OpenRouter.
 
 ## Contributing
@@ -258,6 +316,3 @@ Run locally with `npm run dev`; make sure `npm run typecheck` and `npm test` pas
 **Ponder** — not just the answer, but what to do next with it.
 
 </div>
-#   P o n d e r  
- #   P o n d e r  
- 

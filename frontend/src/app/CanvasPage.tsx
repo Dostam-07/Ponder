@@ -104,7 +104,7 @@ export function CanvasPage({ canvasId, onAsk, askBusy, onSummarize, onGraphChang
 
   /** Ask a grounded, source-bound question as a new thread on THIS canvas. */
   const askConcept = useCallback(
-    (question: string, materialId: string) => {
+    (question: string, materialId: string, visualRequested = false) => {
       onAsk({
         parent_id: null,
         branch_origin: "thread",
@@ -113,6 +113,7 @@ export function CanvasPage({ canvasId, onAsk, askBusy, onSummarize, onGraphChang
         model_speed: "fast",
         web_search: false,
         material_id: materialId,
+        ...(visualRequested ? { visual_requested: true } : {}),
       });
     },
     [onAsk],
@@ -127,7 +128,7 @@ export function CanvasPage({ canvasId, onAsk, askBusy, onSummarize, onGraphChang
       },
       visualize: (concept: string, materialId: string, materialTitle: string) => {
         setSourcesOpen(false);
-        askConcept(conceptVisualizeQuestion(concept, materialTitle), materialId);
+        askConcept(conceptVisualizeQuestion(concept, materialTitle), materialId, true);
       },
       practice: (concept: string, materialId: string, materialTitle: string) => {
         const match = findConceptNode(allNodes, concept);
@@ -150,8 +151,9 @@ export function CanvasPage({ canvasId, onAsk, askBusy, onSummarize, onGraphChang
       openPath: () => setPathOpen(true),
       openMap: () => setMapOpen(true),
       toast: showToast,
+      askBusy,
     }),
-    [showToast],
+    [showToast, askBusy],
   );
 
   return (

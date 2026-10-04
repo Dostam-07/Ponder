@@ -62,7 +62,7 @@ export function CanvasHeader({ onOpenPersonalize, personalizeOpen }: Props) {
         className="flex items-center gap-1 bg-ink-850/95 backdrop-blur border border-ink-700 rounded-lg pl-2.5 pr-1.5 py-1.5 min-w-0"
         aria-label="Canvas location"
       >
-        <a href="#/" className="text-xs text-fog-400 hover:text-fog-100 transition-colors shrink-0" title="Back to Home">
+        <a href="#/canvases" className="text-xs text-fog-400 hover:text-fog-100 transition-colors shrink-0" title="Back to canvas history">
           Canvases
         </a>
         <ChevronRightIcon className="w-3 h-3 text-fog-400 shrink-0" aria-hidden="true" />

@@ -19,6 +19,7 @@ export default {
           600: "rgb(var(--c-ink-600) / <alpha-value>)",
         },
         fog: {
+          500: "rgb(var(--c-fog-500) / <alpha-value>)",
           400: "rgb(var(--c-fog-400) / <alpha-value>)",
           300: "rgb(var(--c-fog-300) / <alpha-value>)",
           200: "rgb(var(--c-fog-200) / <alpha-value>)",

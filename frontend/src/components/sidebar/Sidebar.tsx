@@ -16,9 +16,13 @@ import {
   AtomIcon,
   CompassIcon,
   SearchIcon,
+  CardsIcon,
+  NoteIcon,
+  SunIcon,
+  MoonIcon,
 } from "../ui/Icons";
 
-type NavPage = "home" | "review" | "library" | "graph" | "explore" | "settings";
+type NavPage = "home" | "canvases" | "review" | "library" | "graph" | "explore" | "settings";
 
 interface Props {
   activeCanvasId: string | null;
@@ -28,16 +32,17 @@ interface Props {
   onDeleteCanvas: (id: string) => void;
   onNav: (route: NavPage) => void;
   /** Current top-level page — Home gets the obvious active state (spec §2). */
-  activePage?: NavPage | "canvas";
+  activePage?: NavPage;
   /** Mobile: sidebar renders as an overlay when open. */
   mobileOpen?: boolean;
   onMobileClose?: () => void;
 }
 
-const NAV: { page: "home" | "canvas" | NavPage; label: string; Icon: (p: { className?: string; "aria-hidden"?: boolean | "true" }) => JSX.Element }[] = [
+const NAV: { page: NavPage; label: string; Icon: (p: { className?: string; "aria-hidden"?: boolean | "true" }) => JSX.Element }[] = [
   { page: "home", label: "Home", Icon: HomeIcon },
-  { page: "canvas", label: "Canvas", Icon: AtomIcon },
+  { page: "canvases", label: "Canvas", Icon: AtomIcon },
   { page: "library", label: "Library", Icon: BookIcon },
+  { page: "review", label: "Spaced review", Icon: CardsIcon },
   { page: "graph", label: "Knowledge Graph", Icon: GraphIcon },
   { page: "explore", label: "Explore", Icon: CompassIcon },
   { page: "settings", label: "Settings", Icon: GearIcon },
@@ -54,7 +59,7 @@ export function Sidebar({
   onMobileClose,
 }: Props) {
   const qc = useQueryClient();
-  const { icon, setIcon } = usePrefs();
+  const { icon, setIcon, theme, toggleTheme } = usePrefs();
   const [renaming, setRenaming] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
 
@@ -94,29 +99,22 @@ export function Sidebar({
     }
   };
 
-  const nav = (page: "home" | "review" | "library" | "graph" | "explore" | "settings" | "canvas") => {
-    if (page === "canvas") {
-      // "Canvas" nav entry: most recent canvas, creating one only if none exists.
-      const first = canvases.data?.[0];
-      if (first) onOpenCanvas(first.id);
-      else onNewCanvas();
-    } else {
-      onNav(page);
-    }
+  const nav = (page: NavPage) => {
+    onNav(page);
     onMobileClose?.();
   };
 
   const body = (
     <aside
-      className={`w-60 shrink-0 h-full bg-ink-900 border-r border-ink-700 flex-col ${
+      className={`w-64 shrink-0 h-full bg-ink-900 border-r border-ink-700 flex-col ${
         mobileOpen ? "fixed inset-y-0 left-0 z-40 shadow-2xl flex" : "hidden lg:flex"
       }`}
       aria-label="Ponder navigation"
     >
       {/* brand */}
-      <div className="px-4 pt-5 pb-4 flex items-center gap-2.5">
-        <activeIcon.Icon className="w-5 h-5 ponder-mark mark-glow shrink-0" aria-hidden="true" />
-        <span className="flex-1 text-[15px] font-semibold text-fog-100 tracking-tight">Ponder</span>
+      <div className="px-5 pt-6 pb-5 flex items-center gap-3">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-spark-500/20 bg-spark-500/10"><activeIcon.Icon className="w-5 h-5 ponder-mark shrink-0" aria-hidden="true" /></span>
+        <div className="flex-1"><span className="block text-base font-semibold text-fog-100 tracking-tight">Ponder</span><span className="text-[10px] tracking-wide text-fog-500">A little curiosity goes a long way</span></div>
         {mobileOpen && (
           <button className="btn-ghost" title="Close menu" aria-label="Close menu" onClick={onMobileClose}>
             <CloseIcon />
@@ -124,16 +122,20 @@ export function Sidebar({
         )}
       </div>
 
+      <div className="px-3 pb-4">
+        <button className="btn-primary w-full !justify-start !px-3" onClick={() => { onNewCanvas(); onMobileClose?.(); }}><PlusIcon className="h-4 w-4" /> New exploration</button>
+      </div>
+
       {/* primary nav */}
-      <nav className="px-2.5 space-y-0.5" aria-label="Primary">
+      <nav className="px-3 space-y-1" aria-label="Primary">
         {NAV.map(({ page, label, Icon }) => {
           const active = activePage === page;
           return (
             <button
               key={page}
-              className={`w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition-colors ${
+              className={`w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-[13px] transition-colors ${
                 active
-                  ? "bg-spark-500/15 text-fog-100 font-medium shadow-[inset_2px_0_0_rgb(var(--c-spark-400))]"
+                  ? "bg-spark-500/10 text-spark-400 font-medium"
                   : "text-fog-300 hover:bg-ink-800 hover:text-fog-100"
               }`}
               onClick={() => nav(page)}
@@ -142,7 +144,7 @@ export function Sidebar({
             >
               <Icon className={`w-4 h-4 shrink-0 ${active ? "ponder-mark" : ""}`} aria-hidden="true" />
               <span className="flex-1 text-left">{label}</span>
-              {page === "library" && typeof stats.data?.due_count === "number" && stats.data.due_count > 0 && (
+              {page === "review" && typeof stats.data?.due_count === "number" && stats.data.due_count > 0 && (
                 <span
                   className="bg-spark-500/20 text-spark-400 text-xs rounded-full px-1.5 py-0.5"
                   aria-label={`${stats.data.due_count} cards due for review`}
@@ -156,7 +158,7 @@ export function Sidebar({
       </nav>
 
       {/* global search across all local canvases (roadmap B) */}
-      <div className="px-2.5 pt-4">
+      <div className="px-3 pt-5">
         <div className="relative">
           <SearchIcon className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-fog-500" />
           <input
@@ -164,7 +166,7 @@ export function Sidebar({
             onChange={(e) => setSearchQ(e.target.value)}
             placeholder="Search all canvases…"
             aria-label="Search all canvases"
-            className="w-full rounded-lg bg-ink-800 border border-ink-600 pl-8 pr-7 py-1.5 text-xs text-fog-100 placeholder:text-fog-500 focus:outline-none focus:border-spark-500"
+            className="w-full rounded-xl bg-ink-850 border border-ink-700 pl-8 pr-7 py-2.5 text-xs text-fog-100 placeholder:text-fog-500 focus:outline-none focus:border-spark-500"
           />
           {searchQ && (
             <button
@@ -194,10 +196,12 @@ export function Sidebar({
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-2.5 space-y-0.5">
+      <div className="flex-1 overflow-y-auto px-3 space-y-1">
         {searching ? (
           search.isPending ? (
             <p className="text-xs text-fog-400 px-2 py-2">Searching…</p>
+          ) : search.isError ? (
+            <p className="text-xs text-red-400 px-2 py-2">Could not search your workspace. Try again.</p>
           ) : searchHits.length === 0 ? (
             <p className="text-xs text-fog-400 px-2 py-2 leading-relaxed">
               No matches for “{debouncedQ}” in your canvases.
@@ -230,8 +234,8 @@ export function Sidebar({
           canvases.data!.map((c) => (
             <div
               key={c.id}
-              className={`group flex items-center rounded-lg px-2.5 py-1.5 cursor-pointer text-sm transition-colors ${
-                c.id === activeCanvasId ? "bg-ink-700 text-fog-100" : "text-fog-300 hover:bg-ink-800"
+              className={`group flex items-center rounded-xl px-3 py-2 cursor-pointer text-xs transition-colors ${
+                c.id === activeCanvasId ? "bg-spark-500/10 text-fog-100" : "text-fog-400 hover:bg-ink-800 hover:text-fog-200"
               }`}
               onClick={() => {
                 onOpenCanvas(c.id);
@@ -239,7 +243,10 @@ export function Sidebar({
               }}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (onOpenCanvas(c.id), onMobileClose?.())}
+              onKeyDown={(e) => {
+                if (e.target !== e.currentTarget) return;
+                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpenCanvas(c.id); onMobileClose?.(); }
+              }}
               aria-current={c.id === activeCanvasId ? "page" : undefined}
             >
               {renaming === c.id ? (
@@ -256,6 +263,14 @@ export function Sidebar({
               ) : (
                 <>
                   <span className="flex-1 truncate">{c.title}</span>
+                  <button
+                    className="opacity-0 group-hover:opacity-100 focus:opacity-100 btn-ghost !p-1"
+                    title="Rename canvas"
+                    aria-label={`Rename canvas ${c.title}`}
+                    onClick={(event) => { event.stopPropagation(); setRenameValue(c.title); setRenaming(c.id); }}
+                  >
+                    <NoteIcon className="w-3 h-3" />
+                  </button>
                   <button
                     className="opacity-0 group-hover:opacity-100 focus:opacity-100 btn-ghost !p-1"
                     title="Delete canvas"
@@ -296,7 +311,7 @@ export function Sidebar({
       </div>
 
       {/* workspace icon picker — persisted identity (kept from previous design) */}
-      <div className="px-3 pb-3 relative">
+      <div className="px-3 pb-4 pt-3 border-t border-ink-700 flex items-center justify-between relative">
         <Popover
           align="left"
           trigger={({ onClick, ref, ...aria }) => (
@@ -336,6 +351,7 @@ export function Sidebar({
             })}
           </div>
         </Popover>
+        <button className="btn-ghost flex items-center gap-1.5 text-xs" onClick={toggleTheme} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`} title="Toggle theme">{theme === "dark" ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}<span className="text-fog-400">{theme === "dark" ? "Light" : "Dark"}</span></button>
       </div>
     </aside>
   );

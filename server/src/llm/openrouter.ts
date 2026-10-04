@@ -1,5 +1,23 @@
 import type { GenerateOptions, LLMProvider } from "./provider.js";
 import { ProviderError, streamChatCompletions } from "./provider.js";
+import type { PictureErrorCode } from "@canvas-learn/shared";
+
+export class PictureGenerationError extends ProviderError {
+  constructor(message: string, status: number, public readonly code: PictureErrorCode) {
+    super(message, status, "openrouter");
+    this.name = "PictureGenerationError";
+  }
+}
+
+/** Provider response bodies may contain raw diagnostics or credentials. Only
+ * known status-based guidance is returned to the UI or persisted in a canvas. */
+function pictureHttpError(status: number): PictureGenerationError {
+  if (status === 402) return new PictureGenerationError("This OpenRouter account or API key has insufficient credits for picture generation. Add credits or use a funded key in Settings → AI & connections, then retry the picture.", status, "credits_required");
+  if (status === 401 || status === 403) return new PictureGenerationError("OpenRouter rejected the picture request. Check your API key, account, and model access in Settings → AI & connections.", status, "key_rejected");
+  if (status === 400 || status === 404 || status === 422) return new PictureGenerationError("This picture model is unavailable or does not support this image request. Check the Picture model in Settings → AI & connections.", status, "model_unavailable");
+  if (status === 429) return new PictureGenerationError("OpenRouter is temporarily rate-limiting picture generation. Wait a moment, then retry the picture.", status, "rate_limited");
+  return new PictureGenerationError("The picture provider is temporarily unavailable. Try again shortly.", status, "provider_unavailable");
+}
 
 /**
  * Streaming-safe filter that swallows <think>…</think> reasoning blocks some free
@@ -59,6 +77,46 @@ export class OpenRouterProvider implements LLMProvider {
 
   constructor(private apiKey: string = process.env.OPENROUTER_API_KEY ?? "") {}
 
+  private savedImageModel: string | null = null;
+
+  /** Apply Settings immediately; null restores the environment fallback. */
+  configure(apiKey: string | null, imageModel: string | null) {
+    const nextKey = apiKey ?? process.env.OPENROUTER_API_KEY?.trim() ?? "";
+    if (this.apiKey !== nextKey) this.dailyLimitUntil = 0;
+    this.apiKey = nextKey;
+    this.savedImageModel = imageModel;
+  }
+
+  get configured(): boolean {
+    return this.apiKey.length > 0;
+  }
+
+  get keyHint(): string {
+    return this.apiKey.length >= 8 ? `••••${this.apiKey.slice(-4)}` : this.apiKey ? "••••" : "";
+  }
+
+  get imageModel(): string {
+    return this.savedImageModel || process.env.OPENROUTER_IMAGE_MODEL?.trim() || "google/gemini-2.5-flash-image";
+  }
+
+  /** Verify authentication without generating text or a billable picture. */
+  async testConnection(): Promise<void> {
+    if (!this.configured) throw new ProviderError("Add and save your OpenRouter API key first", 400, "openrouter");
+    const response = await fetch("https://openrouter.ai/api/v1/key", {
+      headers: { Authorization: `Bearer ${this.apiKey}` },
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!response.ok) {
+      throw new ProviderError(
+        response.status === 401 || response.status === 403
+          ? "OpenRouter rejected this key. Check the key and try again."
+          : `OpenRouter connection check failed (HTTP ${response.status}). Try again shortly.`,
+        response.status,
+        "openrouter",
+      );
+    }
+  }
+
   get hasKey(): boolean {
     return this.apiKey.length > 0 && Date.now() >= this.dailyLimitUntil;
   }
@@ -83,6 +141,49 @@ export class OpenRouterProvider implements LLMProvider {
       throw err;
     }
     return full;
+  }
+
+  /** Generate one persisted image through OpenRouter's dedicated Image API. */
+  async generateImage(prompt: string, abort?: AbortSignal): Promise<{ dataUrl: string; mediaType: string; model: string }> {
+    if (!this.apiKey) throw new PictureGenerationError("Add and save an OpenRouter API key in Settings → AI & connections before generating pictures.", 401, "key_required");
+    const model = this.imageModel;
+    const res = await fetch("https://openrouter.ai/api/v1/images", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+        "HTTP-Referer": "http://localhost:5173",
+        "X-Title": "Ponder",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        prompt,
+        n: 1,
+        aspect_ratio: "16:9",
+      }),
+      signal: abort
+        ? AbortSignal.any([abort, AbortSignal.timeout(180_000)])
+        : AbortSignal.timeout(180_000),
+    });
+    if (!res.ok) {
+      await res.body?.cancel().catch(() => {});
+      throw pictureHttpError(res.status);
+    }
+    const body = (await res.json()) as {
+      data?: { b64_json?: string; media_type?: string }[];
+      error?: { code?: number | string };
+    };
+    const image = body.data?.[0];
+    if (typeof image?.b64_json !== "string" || !/^[A-Za-z0-9+/]+={0,2}$/.test(image.b64_json)) {
+      const status = Number(body.error?.code);
+      if (status >= 400 && status < 600) throw pictureHttpError(status);
+      throw new PictureGenerationError("Picture generation returned no image. Check the Picture model in Settings and try again.", 502, "no_image");
+    }
+    if (image.b64_json.length > 20 * 1024 * 1024) {
+      throw new ProviderError("The generated picture is too large to store — try a smaller image model", 502, "openrouter");
+    }
+    const mediaType = image.media_type?.startsWith("image/") ? image.media_type : "image/png";
+    return { dataUrl: `data:${mediaType};base64,${image.b64_json}`, mediaType, model };
   }
 
   private async doGenerate(opts: GenerateOptions, onDelta: (chunk: string) => void): Promise<string> {

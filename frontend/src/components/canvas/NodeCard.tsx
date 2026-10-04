@@ -3,13 +3,14 @@ import { Handle, Position as RFPosition, useStore, type NodeProps } from "@xyflo
 import type { NodeEntity, AskRequest, ThinkingMode } from "@canvas-learn/shared";
 import { cardLoD } from "../../lib/viewport";
 import { useCanvasStore } from "../../stores/canvasStore";
-import { parseAnswerSegments } from "../../lib/termparser";
-import { renderInline } from "../../lib/inline";
+import { extractTerms, parseAnswerSegments, termExplanationContext } from "../../lib/termparser";
+import { InlineExplanation } from "./InlineExplanation";
 import { wheelShouldConsume } from "../../lib/wheel";
 import { VisualRenderer } from "../visuals/VisualRenderer";
+import { VisualGenerationError } from "../visuals/VisualGenerationError";
 import { PracticeSheet } from "../practice/PracticeSheet";
 import { RecallSheet } from "../practice/RecallSheet";
-import { api } from "../../lib/api";
+import { api, ApiError } from "../../lib/api";
 import {
   SparkleIcon,
   TrashIcon,
@@ -25,6 +26,7 @@ import {
   PracticeIcon,
   CardIcon,
   EyeIcon,
+  ImageIcon,
   CloseIcon,
 } from "../ui/Icons";
 import { useCanvas } from "../canvas/CanvasContext";
@@ -123,15 +125,18 @@ function CompactCard({ node }: { node: NodeEntity }) {
 
 const FullCard = memo(function FullCard({ data }: Props) {
   const { node, streaming, onAsk, onPlus, onToggleCollapse, onDelete, onSave, onRegenerate } = data;
-  const { openPath, toast } = useCanvas();
+  const { openPath, toast, askBusy = false } = useCanvas();
   const patchNodeLocal = useCanvasStore((s) => s.patchNodeLocal);
+  const automaticVisualError = useCanvasStore((s) => s.visualErrors[node.id]);
   const [followup, setFollowup] = useState("");
   const [noteOpen, setNoteOpen] = useState(false);
   const [practicing, setPracticing] = useState(false);
   const [recalling, setRecalling] = useState(false);
   const [copied, setCopied] = useState(false);
   const [visualBusy, setVisualBusy] = useState(false);
-  const [visualError, setVisualError] = useState<string | null>(null);
+  const [visualError, setVisualError] = useState<{ message: string; code?: string } | null>(null);
+  const [visualKind, setVisualKind] = useState<"diagram" | "picture">(node.visual?.type === "image" ? "picture" : "diagram");
+  const visualFailure = visualError ?? (node.visual?.type === "image" && node.visual.status === "failed" ? node.visual.error ?? { message: "Picture generation failed. Check your key and picture model in Settings, then retry." } : null);
   const visualAbortRef = useRef<AbortController | null>(null);
   // Synchronous in-flight lock: React state updates are async, so a double-click
   // inside one render tick would both see visualBusy=false and both fire. The
@@ -174,6 +179,7 @@ const FullCard = memo(function FullCard({ data }: Props) {
     visualInFlightRef.current = false;
     setVisualBusy(false);
     setVisualError(null);
+    setVisualKind(node.visual?.type === "image" ? "picture" : "diagram");
   }, [node.id]);
   useEffect(() => () => visualAbortRef.current?.abort(), []);
 
@@ -187,12 +193,18 @@ const FullCard = memo(function FullCard({ data }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [streaming, node.status, node.id]);
 
-  const segments = parseAnswerSegments(node.answer_text);
+  const keyTerms = [...node.key_terms, ...extractTerms(node.answer_text), ...node.sections.flatMap((section) => extractTerms(section.body))];
   const done = node.status === "complete";
   // Structured sections reshape a real answer (spec §4/§15) — they must never
   // substitute for one: no answer → render the answer area's own states only.
   const hasAnswer = node.answer_text.trim().length > 0;
-  const showSections = done && hasAnswer && node.sections.length > 0;
+  const answerLength = node.answer_text.replace(/\[\[[^\]]+\]\]/g, "").trim().length;
+  const sectionLength = node.sections.reduce((total, section) => total + section.body.length, 0);
+  // A small/failed restructuring call must not make a good streamed answer look
+  // short. Fall back to the canonical answer unless the sections retain most of
+  // its teaching content.
+  const showSections = done && hasAnswer && node.sections.length > 0 && sectionLength >= answerLength * 0.7
+    && (keyTerms.length === 0 || node.sections.some((section) => parseAnswerSegments(section.body, keyTerms).some((segment) => segment.kind === "term")));
 
   // Why-chain breadcrumb (thinking-spec §5): the ancestor trail behind this node.
   const allNodes = useCanvasStore((s) => s.nodes);
@@ -220,14 +232,27 @@ const FullCard = memo(function FullCard({ data }: Props) {
     });
   };
 
-  const chipClick = (term: string) => {
+  const chipClick = (term: string, passage = node.answer_text) => {
+    const question = `Explain ${term.slice(0, 180)}`;
+    const normalize = (value: string) => value.trim().replace(/\s+/g, " ").toLowerCase();
+    const existing = Object.values(allNodes).find((candidate) => candidate.parent_id === node.id && candidate.branch_origin === "term_chip" && normalize(candidate.question) === normalize(question));
+    if (existing && existing.status !== "failed" && (existing.status !== "complete" || existing.answer_text.trim())) {
+      if (existing.collapsed) useCanvasStore.getState().setCollapsed(existing.id, false);
+      useCanvasStore.getState().requestFocus(existing.id);
+      return;
+    }
+    if (askBusy) return;
+    if (existing) { onRegenerate(existing); return; }
     onAsk({
       parent_id: node.id,
       branch_origin: "term_chip",
-      question: `Explain ${term}`,
+      question,
       position: node.position,
       model_speed: "fast",
       web_search: false,
+      mode: "explain",
+      context_text: termExplanationContext(passage, term),
+      ...(node.material_id ? { material_id: node.material_id } : {}),
     });
   };
 
@@ -282,16 +307,16 @@ const FullCard = memo(function FullCard({ data }: Props) {
   };
 
   /**
-   * Contextual action: visualize this node's content as a diagram (spec §5, §14).
+   * Contextual action: visualize this node's content on demand (spec §5, §14).
    * Full lifecycle: skeleton appears immediately → the server generates + persists
    * → the real visual replaces the skeleton. On failure the slot shows the actual
    * error with a Retry action (no silent no-op, no false success, no leftover
    * skeleton). Repeated clicks while a request is in flight are no-ops.
    */
-  const visualize = async () => {
+  const visualize = async (kind: "diagram" | "picture" = visualKind) => {
     if (visualInFlightRef.current) return; // dedupe: one in-flight request per node
     if (!node.answer_text.trim()) {
-      setVisualError("This answer is empty — regenerate it first (↻), then visualize.");
+      setVisualError({ message: "This answer is empty — regenerate it first (↻), then visualize." });
       return;
     }
     const ctrl = new AbortController();
@@ -299,22 +324,23 @@ const FullCard = memo(function FullCard({ data }: Props) {
     visualInFlightRef.current = true;
     setVisualBusy(true);
     setVisualError(null);
+    setVisualKind(kind);
     try {
       // The server caps the text at 6000 chars — truncate mechanically instead of
       // letting a long answer 400 for that reason alone.
-      const { visual } = await api.generateVisual({ node_id: node.id, text: node.answer_text.slice(0, 6000) }, ctrl.signal);
+      const { visual } = await api.generateVisual({ node_id: node.id, kind, text: node.answer_text.slice(0, 6000) }, ctrl.signal);
       if (ctrl.signal.aborted) return;
       if (!visual) {
         // The server always returns a block; null means something unexpected —
         // report it rather than claim success.
-        setVisualError("Visual generation returned no result — try again.");
+        setVisualError({ message: "Visual generation returned no result — try again." });
         return;
       }
       patchNodeLocal(node.id, { visual });
       toast(visual.type === "none" ? "No visual fit this content — try asking a more structural question" : "Visual added");
     } catch (err) {
       if (!ctrl.signal.aborted) {
-        setVisualError(err instanceof Error ? err.message : "Visual generation failed");
+        setVisualError({ message: err instanceof Error ? err.message : "Visual generation failed", ...(err instanceof ApiError ? { code: err.code } : {}) });
       }
     } finally {
       if (!ctrl.signal.aborted) {
@@ -501,32 +527,21 @@ const FullCard = memo(function FullCard({ data }: Props) {
               scroll from the canvas zoom. */}
           <div
             ref={answerRef}
-            className={`ponder-selectable px-3 py-2 text-sm text-fog-200 overflow-y-auto space-y-2 ${streaming ? "max-h-64" : "max-h-[1024px]"}`}
+            className={`ponder-selectable px-3 py-2 text-sm text-fog-200 whitespace-pre-line break-words overflow-y-auto space-y-2 ${streaming ? "max-h-64" : "max-h-[1024px]"}`}
             style={{ touchAction: "pan-y" }}
           >
-            {segments.length === 0 && streaming && node.answer_text.length === 0 && <span className="sr-only">Generating response…</span>}
+            {!hasAnswer && streaming && <span className="sr-only">Generating response…</span>}
             {showSections ? (
               node.sections.map((s, i) => (
                 <section key={i} className="ponder-selectable">
                   <h4 className="text-xs font-semibold text-fog-100 uppercase tracking-wide">{s.heading}</h4>
                   <p className="mt-0.5 leading-relaxed">
-                    {renderInline(s.body).map((t, j) =>
-                      t.bold ? <strong key={j}>{t.text}</strong> : t.italic ? <em key={j}>{t.text}</em> : <span key={j}>{t.text}</span>,
-                    )}
+                    <InlineExplanation text={s.body} keyTerms={keyTerms} onExplain={chipClick} disabled={askBusy || node.status === "answering"} />
                   </p>
                 </section>
               ))
             ) : (
-              segments.map((seg, i) =>
-                seg.kind === "text" ? (
-                  <span key={i}>{seg.text}</span>
-                ) : (
-                  <button key={i} className="term-chip" onClick={() => chipClick(seg.term)} title={`Branch into “${seg.term}”`}>
-                    <SparkleIcon className="w-3 h-3" />
-                    {seg.term}
-                  </button>
-                ),
-              )
+              <InlineExplanation text={node.answer_text} keyTerms={keyTerms} onExplain={chipClick} disabled={askBusy || node.status === "answering"} />
             )}
             {streaming && node.answer_text.length > 0 && (
               <span className="inline-block w-[2px] h-[1em] align-middle bg-spark-400 animate-pulse ml-0.5" aria-hidden="true" />
@@ -542,13 +557,15 @@ const FullCard = memo(function FullCard({ data }: Props) {
             )}
           </div>
 
+          {done && keyTerms.length > 0 && <p className="px-3 pb-2 text-[10px] text-fog-500">Click a highlighted term to open its explanation.</p>}
+
           {/* visual block (spec §5) — skeleton while generating, real error + Retry
               on failure, the actual visual when ready. All three occupy the same
               slot so the card stays anchored (no jumps) across the lifecycle. A
               previously good visual is kept visible if a regeneration fails. */}
-          {visualBusy ? <VisualSkeleton /> : null}
-          {!visualBusy && visualError ? <VisualErrorState message={visualError} onRetry={() => void visualize()} /> : null}
-          {!visualBusy ? <VisualRenderer visual={node.visual} /> : null}
+          {visualBusy ? <VisualSkeleton kind={visualKind} /> : null}
+          {!visualBusy && visualFailure ? <VisualGenerationError message={visualFailure.message} code={visualFailure.code} kind={visualKind} onRetry={() => void visualize(visualKind)} /> : null}
+          {!visualBusy && (!visualFailure || node.visual?.status === "ready") ? <VisualRenderer visual={node.visual} error={automaticVisualError} /> : null}
 
           {/* why-chain breadcrumb (thinking-spec §5): visible trail back to the original question */}
           {done && whyTrail.length > 1 && (
@@ -629,7 +646,8 @@ const FullCard = memo(function FullCard({ data }: Props) {
               <MiniAction icon={<EyeIcon />} label="Go deeper" title="One layer deeper on this concept" onClick={goDeeper} />
               <MiniAction icon={<HelpIcon />} label="Why?" title="Drill into why — build a chain of reasons" onClick={askWhy} />
               <MiniAction icon={<ChallengeIcon />} label="Challenge" title="Examine hidden assumptions and counterexamples in this answer" onClick={() => askMode("challenge", `Challenge this: "${node.answer_text.slice(0, 300)}" — surface its hidden assumptions, missing evidence, and one alternative explanation`)} />
-              <MiniAction icon={<SparkleIcon />} label={visualBusy ? "Creating…" : "Visualize"} title="Generate a diagram of this answer" onClick={() => void visualize()} disabled={visualBusy} />
+              <MiniAction icon={<SparkleIcon />} label={visualBusy && visualKind === "diagram" ? "Creating…" : "Diagram"} title="Create a flowchart, chart, or simulation of this answer" onClick={() => void visualize("diagram")} disabled={visualBusy} />
+              <MiniAction icon={<ImageIcon />} label={visualBusy && visualKind === "picture" ? "Painting…" : "Picture"} title="Generate an educational picture using OpenRouter (requires image-model credits)" onClick={() => void visualize("picture")} disabled={visualBusy} />
               <MiniAction icon={<PracticeIcon />} label="Practice" title="Generate exercises from this answer" onClick={() => setPracticing(true)} />
               <MiniAction icon={<HelpIcon />} label="Recall" title="Explain it back from memory — active recall" onClick={() => setRecalling(true)} />
               <MiniAction icon={<CardIcon />} label="Save card" title="Turn this into a Knowledge Card for review" onClick={() => void makeCard()} />
@@ -734,39 +752,18 @@ function MiniAction({ icon, label, title, onClick, disabled }: { icon: React.Rea
  * with stable dimensions (≈ a typical 200px render) and softly pulsing
  * placeholder blocks — no blank area, no fake progress, no fake visual.
  */
-function VisualSkeleton() {
+function VisualSkeleton({ kind = "diagram" }: { kind?: "diagram" | "picture" }) {
   return (
     <div className="border-t border-ink-700 px-3 py-3" role="status" aria-live="polite" aria-label="Creating visual">
       <div className="flex items-center gap-2 mb-2">
         <SparkleIcon className="w-3.5 h-3.5 animate-pulse" aria-hidden="true" />
-        <span className="text-xs text-fog-400">Creating visual…</span>
+        <span className="text-xs text-fog-400">{kind === "picture" ? "Creating picture…" : "Creating diagram…"}</span>
       </div>
       <div className="space-y-2" aria-hidden="true">
         <div className="h-3 w-1/3 rounded bg-ink-700/80 animate-pulse" />
         <div className="h-24 rounded bg-ink-700/60 animate-pulse" style={{ animationDelay: "120ms" }} />
         <div className="h-3 w-2/3 rounded bg-ink-700/60 animate-pulse" style={{ animationDelay: "240ms" }} />
       </div>
-    </div>
-  );
-}
-
-/**
- * Failure state for visual generation: the real server error message plus a
- * Retry action — never a silent no-op, never a permanent skeleton.
- */
-function VisualErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
-  return (
-    <div className="border-t border-ink-700 px-3 py-2.5">
-      <p className="text-xs text-red-400 leading-snug">{message}</p>
-      <button
-        className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-fog-300 hover:text-spark-400 border border-ink-600 hover:border-spark-500 rounded-md px-2 py-1 transition-colors"
-        onClick={onRetry}
-        aria-label="Retry visual generation"
-        title="Try generating the visual again"
-      >
-        <RefreshIcon className="w-3 h-3" aria-hidden="true" />
-        Retry visual
-      </button>
     </div>
   );
 }

@@ -56,6 +56,7 @@ beforeEach(() => {
     profile: null,
     map: null,
     streamingIds: new Set<string>(),
+    visualErrors: {},
     focusRequest: null,
     viewports: {},
     past: [],
@@ -135,6 +136,40 @@ describe("focusRequest — new answer routing (AC1/AC2/AC3)", () => {
     expect(n.suggested_followups).toEqual(["f1"]);
     expect(n.tags).toEqual(["optics"]);
     expect(useCanvasStore.getState().focusRequest?.nodeId).toBe(NODE_A1);
+  });
+});
+
+describe("visual lifecycle events", () => {
+  it("makes recovered key terms available at answer completion before enhancements finish", () => {
+    useCanvasStore.getState().loadGraph(CANVAS_A, "A", [node(NODE_A1, CANVAS_A, { answer_text: "Water vapor cools." })]);
+    useCanvasStore.getState().applyAskEvent({ type: "stage2", node_id: NODE_A1, title: "Rain", followups: [], tags: [], key_terms: ["Water vapor"] });
+    expect(useCanvasStore.getState().nodes[NODE_A1]?.key_terms).toEqual(["Water vapor"]);
+    expect(useCanvasStore.getState().nodes[NODE_A1]?.status).toBe("complete");
+  });
+
+  it("keeps automatic visual progress visible even before a type is selected", () => {
+    useCanvasStore.getState().loadGraph(CANVAS_A, "A", [node(NODE_A1, CANVAS_A)]);
+    useCanvasStore.getState().applyAskEvent({
+      type: "visual_status",
+      node_id: NODE_A1,
+      status: "generating",
+      message: "Creating a visual...",
+    });
+    expect(useCanvasStore.getState().nodes[NODE_A1]?.visual).toEqual({ type: "none", status: "generating", spec: null });
+    expect(useCanvasStore.getState().visualErrors[NODE_A1]).toBeUndefined();
+  });
+
+  it("preserves the automatic visual error for the card and clears it after success", () => {
+    useCanvasStore.getState().loadGraph(CANVAS_A, "A", [node(NODE_A1, CANVAS_A)]);
+    useCanvasStore.getState().applyAskEvent({ type: "visual_status", node_id: NODE_A1, status: "failed", message: "Ollama is unavailable" });
+    expect(useCanvasStore.getState().visualErrors[NODE_A1]).toBe("Ollama is unavailable");
+    useCanvasStore.getState().applyAskEvent({
+      type: "visual",
+      node_id: NODE_A1,
+      block: { type: "flowchart", status: "ready", spec: { mermaid: "flowchart TD\nA --> B" } },
+    });
+    expect(useCanvasStore.getState().visualErrors[NODE_A1]).toBeUndefined();
+    expect(useCanvasStore.getState().nodes[NODE_A1]?.visual?.type).toBe("flowchart");
   });
 });
 

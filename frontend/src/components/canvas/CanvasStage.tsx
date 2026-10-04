@@ -337,6 +337,16 @@ export function CanvasStage({ onAsk }: Props) {
     [onAsk],
   );
 
+  // Selection (roadmap E): React Flow v12 reports it as `select` node changes,
+  // and in CONTROLLED mode the prop is the source of truth — a select change
+  // that isn't applied to the nodes array never surfaces (no .selected class,
+  // no selected prop, no LOD exception). We track selected ids locally and carry
+  // them onto the controlled node objects below.
+  const [selectedIds, setSelectedIds] = useState<ReadonlySet<string>>(new Set());
+  useEffect(() => {
+    setSelectedIds(new Set()); // canvas switch — selection never leaks across canvases
+  }, [canvasId]);
+
   // ----- nodes/edges derived from the entity store -----
   const nodes: CardNode[] = useMemo(() => {
     const lookup = flowStore.getState().nodeLookup;
@@ -412,17 +422,6 @@ export function CanvasStage({ onAsk }: Props) {
     }
     return list;
   }, [store.order, store.nodes, store.links]);
-
-  // Selection (roadmap E): React Flow v12 reports it as `select` node changes,
-  // and in CONTROLLED mode the prop is the source of truth — a select change
-  // that isn't applied to the nodes array never surfaces (no .selected class,
-  // no selected prop, no LOD exception). Live E2E caught exactly this: clicks
-  // produced zero selection. We track selected ids locally and carry them onto
-  // the controlled node objects below.
-  const [selectedIds, setSelectedIds] = useState<ReadonlySet<string>>(new Set());
-  useEffect(() => {
-    setSelectedIds(new Set()); // canvas switch — selection never leaks across canvases
-  }, [canvasId]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange<CardNode>[]) => {
@@ -508,7 +507,7 @@ export function CanvasStage({ onAsk }: Props) {
           <div className="text-center max-w-md px-6">
             <h2 className="text-lg font-medium text-fog-100">Canvas — A visual way to understand things in parallel</h2>
             <p className="text-fog-400 text-sm mt-2">
-              Ask a question below to start your first thread. Branch from any answer with term chips, follow-ups, or the
+              Ask a question below to start your first thread. Branch from any answer with highlighted terms, follow-ups, or the
               + buttons.
             </p>
           </div>

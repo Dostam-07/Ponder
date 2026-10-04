@@ -38,6 +38,19 @@ describe("normalizeVisualPayload — flattened model output (regression, live ge
 });
 
 describe("parseVisualSpec", () => {
+  it("accepts a persisted picture and rejects missing or non-image data", () => {
+    const spec = {
+      data_url: "data:image/png;base64,iVBORw0KGgo=",
+      media_type: "image/png",
+      prompt: "A water cycle illustration",
+      alt: "An illustrated water cycle",
+      model: "test/image-model",
+    };
+    expect(parseVisualSpec({ type: "image", spec }).block).toEqual({ type: "image", status: "ready", spec });
+    expect(parseVisualSpec({ type: "image", spec: { ...spec, data_url: "https://example.com/placeholder.png" } }).ok).toBe(false);
+    expect(parseVisualSpec({ type: "image", spec: null }).ok).toBe(false);
+  });
+
   it("accepts a valid chart spec with numeric values", () => {
     const r = parseVisualSpec({
       type: "chart",

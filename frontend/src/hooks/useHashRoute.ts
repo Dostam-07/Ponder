@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 /**
- * Hash routes: #/canvas/:id · #/review · #/library · #/graph · #/settings · #/ (home).
+ * Hash routes: #/canvases (history) · #/canvas/:id · #/review · #/library · #/graph · #/settings · #/ (home).
  * Hash routing keeps deep links working from any static host without rewrites.
  */
 export type Route =
   | { page: "canvas"; canvasId: string }
-  | { page: "home" | "review" | "library" | "graph" | "explore" | "settings" };
+  | { page: "home" | "canvases" | "review" | "library" | "graph" | "explore" | "settings" };
 
 export function parseHash(hash: string): Route {
   const h = hash.replace(/^#\/?/, "");
@@ -14,6 +14,7 @@ export function parseHash(hash: string): Route {
     const id = h.slice("canvas/".length);
     if (id) return { page: "canvas", canvasId: id };
   }
+  if (h === "canvases" || h === "canvas") return { page: "canvases" };
   if (h === "review") return { page: "review" };
   if (h === "library") return { page: "library" };
   if (h === "graph") return { page: "graph" };

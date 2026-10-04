@@ -13,7 +13,8 @@ import { PathRepo, PracticeRepo, CardRepo, MaterialRepo, LinkRepo, ThinkingMapRe
 import { StatsRepo } from "./db/stats.js";
 import { FsrsScheduler } from "./review/fsrs.js";
 import { ModelRouter } from "./llm/router.js";
-import { runPipeline, generateVisual } from "./pipeline/pipeline.js";
+import { PictureGenerationError } from "./llm/openrouter.js";
+import { runPipeline, generatePicture, generateVisual } from "./pipeline/pipeline.js";
 import { generateJsonLenient } from "./pipeline/llmJson.js";
 import {
   PRACTICE_SYSTEM,
@@ -57,6 +58,8 @@ import {
   CanvasSources,
   Artifact,
   ArtifactContent,
+  OpenRouterPreferences,
+  UpdateOpenRouterPreferences,
 } from "@canvas-learn/shared";
 import { z } from "zod";
 import { extractPdfText } from "./util/pdfText.js";
@@ -89,6 +92,12 @@ function loadSavedModels(database: Db, router: ModelRouter): void {
   const row = database.select().from(appState).where(eq(appState.key, "models")).get();
   const saved = parseSavedModels(safeJson(row?.value));
   if (saved) router.setSavedModels(saved.fast, saved.quality);
+}
+
+function readOpenRouterPreferences(database: Db): OpenRouterPreferences {
+  const row = database.select().from(appState).where(eq(appState.key, "openrouter")).get();
+  const parsed = OpenRouterPreferences.safeParse(safeJson(row?.value) ?? {});
+  return parsed.success ? parsed.data : { api_key: null, image_model: null, prefer_openrouter: null };
 }
 
 /** Load a canvas's stored personalization profile (defaults when unset). */
@@ -161,6 +170,7 @@ export function createApp(dbPath: string) {
   // Restore saved model preferences (Settings → Models) — the second rung of the
   // precedence ladder (env var > saved > documented default, see modelConfig.ts).
   loadSavedModels(db, router);
+  router.setOpenRouterSettings(readOpenRouterPreferences(db));
   const profileOf = makeProfileLoader(db);
   // Local backup & restore (roadmap C): consistent snapshots in <data>/../backups
   // (i.e. server/backups/ for the default data dir). Optional scheduled local
@@ -171,6 +181,9 @@ export function createApp(dbPath: string) {
 
   const app = express();
   app.use(cors({ origin: true }));
+  // Picture data is embedded in workspace exports. Allow image-bearing imports
+  // through this parser before the small-body default used by other routes.
+  app.use("/api/import", express.json({ limit: "64mb" }));
   app.use(express.json({ limit: "1mb" }));
   // API responses must never be cached — graphs change constantly.
   app.use("/api", (_req: Request, res: Response, next) => {
@@ -184,22 +197,50 @@ export function createApp(dbPath: string) {
     res.json({ ok: true, ...caps });
   });
 
+  // ---------- OpenRouter connection (write-only key; redacted reads) ----------
+  app.get("/api/settings/openrouter", (_req: Request, res: Response) => {
+    res.json(router.openRouterSettings());
+  });
+
+  app.put("/api/settings/openrouter", (req: Request, res: Response) => {
+    const parsed = UpdateOpenRouterPreferences.safeParse(req.body);
+    if (!parsed.success) return res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Invalid OpenRouter settings", detail: parsed.error.flatten() });
+    const next = { ...readOpenRouterPreferences(db), ...parsed.data };
+    db.insert(appState)
+      .values({ key: "openrouter", value: JSON.stringify(next) })
+      .onConflictDoUpdate({ target: appState.key, set: { value: JSON.stringify(next) } })
+      .run();
+    router.setOpenRouterSettings(next);
+    res.json(router.openRouterSettings());
+  });
+
+  app.post("/api/settings/openrouter/test", async (_req: Request, res: Response) => {
+    try {
+      await router.openrouter.testConnection();
+      res.json({ ok: true, message: "OpenRouter accepted your API key. Your connection is ready." });
+    } catch (err) {
+      res.status(502).json({ error: err instanceof Error ? err.message : "Could not reach OpenRouter" });
+    }
+  });
+
   // ---------- model preferences (Settings → Models) ----------
   // Precedence: env var > saved preference (if still installed) > documented
   // default. `effectiveModels()` reports the source so the UI can explain
   // exactly what is in effect (e.g. env overriding the saved choice).
-  app.get("/api/settings/models", async (_req: Request, res: Response) => {
-    await router.ensureInstalledModels();
+  app.get("/api/settings/models", async (req: Request, res: Response) => {
+    await router.ensureInstalledModels(req.query.refresh === "1");
     res.json(router.effectiveModels());
   });
 
   app.put("/api/settings/models", async (req: Request, res: Response) => {
-    const body = z
+    const parsed = z
       .object({
         fast: z.string().min(1).max(120).nullable().optional(),
         quality: z.string().min(1).max(120).nullable().optional(),
       })
-      .parse(req.body ?? {});
+      .safeParse(req.body ?? {});
+    if (!parsed.success) return res.status(400).json({ error: "Invalid model settings", detail: parsed.error.flatten() });
+    const body = parsed.data;
     const installed = await router.ensureInstalledModels();
     if (installed.length === 0) {
       return res.status(503).json({ error: "Ollama unreachable — cannot validate the selected models (start it and retry)" });
@@ -225,7 +266,7 @@ export function createApp(dbPath: string) {
 
   // ---------- local backup & restore (roadmap C) ----------
   app.get("/api/backups", (_req: Request, res: Response) => {
-    res.json({ backups: backups.list() });
+    res.json({ backups: backups.list(), database_path: ctx.path, backups_path: backups.dir });
   });
 
   app.post("/api/backups", async (req: Request, res: Response) => {
@@ -255,6 +296,7 @@ export function createApp(dbPath: string) {
       ctx.swap();
       runMigrations(ctx.sqlite); // idempotent — the backup may predate schema additions
       loadSavedModels(db, router); // model preferences come from the restored app_state
+      router.setOpenRouterSettings(readOpenRouterPreferences(db));
       nodeRepo.markOrphanedAsFailed(); // in-flight nodes can't survive the swap
       const canvases = canvasRepo.list();
       res.json({
@@ -1366,6 +1408,7 @@ export function createApp(dbPath: string) {
         node_id: z.string().uuid().optional(),
         question: z.string().max(500).optional(),
         text: z.string().min(1).max(6000),
+        kind: z.enum(["diagram", "picture"]).default("diagram"),
         compare: z.boolean().optional(),
       })
       .safeParse(req.body);
@@ -1377,19 +1420,30 @@ export function createApp(dbPath: string) {
       if (!existing) return res.status(404).json({ error: "Node not found" });
     }
     const question = existing?.question ?? body.question ?? "Explain visually";
-    let block: Awaited<ReturnType<typeof generateVisual>>;
+    const controller = new AbortController();
+    const onClose = () => {
+      if (!res.writableEnded) controller.abort();
+    };
+    res.on("close", onClose);
+    let block: Awaited<ReturnType<typeof generateVisual>> | Awaited<ReturnType<typeof generatePicture>>;
     try {
-      block = await generateVisual(question, body.text, "quality", new AbortController().signal, router, body.compare === true ? "comparison_table" : undefined);
+      block = body.kind === "picture"
+        ? await generatePicture(question, body.text, controller.signal, router)
+        : await generateVisual(question, body.text, "quality", controller.signal, router, body.compare === true ? "comparison_table" : undefined);
     } catch (err) {
       // Real failure (no model response / unparseable model output) → 502 with
       // the actionable message. A node with NO usable visual gets an honest
       // persisted "failed" block (the card shows the state after refresh and
       // the Visualize action is the retry path); a previously GOOD visual is
       // never destroyed by a failed regeneration.
-      if (existing && !existing.visual) {
-        nodeRepo.update(existing.id, { visual: { type: "none", status: "failed", spec: null } });
+      if (controller.signal.aborted) return;
+      const failure = { message: err instanceof Error ? err.message : "Visual generation failed", ...(err instanceof PictureGenerationError ? { code: err.code } : {}) };
+      if (existing && (!existing.visual || existing.visual.type === "none" || existing.visual.status === "failed")) {
+        nodeRepo.update(existing.id, { visual: { type: body.kind === "picture" ? "image" : "none", status: "failed", spec: null, ...(err instanceof PictureGenerationError ? { error: failure } : {}) } });
       }
-      return res.status(502).json({ error: err instanceof Error ? err.message : "Visual generation failed" });
+      return res.status(failure.code === "credits_required" ? 402 : 502).json({ error: failure.message, ...(failure.code ? { code: failure.code } : {}) });
+    } finally {
+      res.off("close", onClose);
     }
     if (existing) {
       nodeRepo.update(existing.id, { visual: block });

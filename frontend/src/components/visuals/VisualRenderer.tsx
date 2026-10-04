@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useRef, useState } from "react";
-import type { VisualBlock, ChartSpec, DiagramSpec, IllustrationSpec, ComparisonTableSpec, SimSpec } from "@canvas-learn/shared";
+import type { VisualBlock, ChartSpec, DiagramSpec, IllustrationSpec, ComparisonTableSpec, SimSpec, ImageSpec } from "@canvas-learn/shared";
 import { SimulationVisual } from "./SimulationVisual";
 import {
   PieChart,
@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import mermaid from "mermaid";
 import { ImageOffIcon } from "../ui/Icons";
+import { VisualGenerationError } from "./VisualGenerationError";
 
 
 
@@ -261,9 +262,29 @@ const IllustrationVisual = memo(function IllustrationVisual({ spec }: { spec: Il
   );
 });
 
+const ImageVisual = memo(function ImageVisual({ spec }: { spec: ImageSpec }) {
+  const [failed, setFailed] = useState(false);
+  useEffect(() => setFailed(false), [spec.data_url]);
+  return (
+    <figure className="border-t border-ink-700 overflow-hidden">
+      {failed ? (
+        <p className="px-3 py-3 text-xs text-red-400">Picture could not be displayed. Click Picture to try again.</p>
+      ) : (
+        <img
+          src={spec.data_url}
+          alt={spec.alt}
+          onError={() => setFailed(true)}
+          className="block h-auto w-full"
+        />
+      )}
+      <figcaption className="px-3 py-1.5 text-[10px] text-fog-500">AI-generated illustration · {spec.model}</figcaption>
+    </figure>
+  );
+});
+
 /** Status states matching the recorded UI copy (PRD FR13 / §4.2). */
-export const VisualRenderer = memo(function VisualRenderer({ visual }: { visual: VisualBlock | null }) {
-  if (!visual || visual.type === "none") return null;
+export const VisualRenderer = memo(function VisualRenderer({ visual, error }: { visual: VisualBlock | null; error?: string }) {
+  if (!visual) return null;
 
   if (visual.status === "pending" || visual.status === "generating") {
     return (
@@ -275,12 +296,18 @@ export const VisualRenderer = memo(function VisualRenderer({ visual }: { visual:
     );
   }
   if (visual.status === "failed") {
+    if (visual.error) return <VisualGenerationError message={visual.error.message} code={visual.error.code} kind={visual.type === "image" ? "picture" : "diagram"} />;
     return (
       <div className="border-t border-ink-700 px-3 py-2">
-        <span className="text-fog-400 text-xs">Visual generation failed.</span>
+        <span className="text-red-400 text-xs">{error || "Visual generation failed."}</span>
       </div>
     );
   }
+
+  // A `none` block is a valid completed answer, but pending/generating/failed
+  // blocks also begin with this type before the model chooses a visual. Check
+  // lifecycle status first so the automatic visual slot is never silently blank.
+  if (visual.type === "none") return null;
 
   // ready — but the spec may still be unusable; every branch has a graceful fallback
   try {
@@ -289,6 +316,7 @@ export const VisualRenderer = memo(function VisualRenderer({ visual }: { visual:
     }
     if (visual.type === "chart") return <ChartVisual spec={visual.spec as ChartSpec} />;
     if (visual.type === "comparison_table") return <TableVisual spec={visual.spec as ComparisonTableSpec} />;
+    if (visual.type === "image") return <ImageVisual spec={visual.spec as ImageSpec} />;
     if (visual.type === "illustration") return <IllustrationVisual spec={visual.spec as IllustrationSpec} />;
     if (visual.type === "interactive_sim") return <SimulationVisual spec={visual.spec as SimSpec} />;
   } catch {

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { runPipeline } from "../src/pipeline/pipeline.js";
 import type { ModelRouter } from "../src/llm/router.js";
 import type { GenerateOptions } from "../src/llm/provider.js";
@@ -180,7 +180,7 @@ describe("runPipeline", () => {
     expect(stored?.answer_text).not.toContain("PARTIAL");
   });
 
-  it("reports an honest visual failure without failing the completed answer", async () => {
+  it("reports an honest visual failure for an explicit Visualize click without failing the answer", async () => {
     // Regression: a swallowed visual failure used to masquerade as a "none"
     // success (the UI said "no visual fit this content" even though the model
     // output was garbage). Now: node stays complete, no fake "visual" event,
@@ -192,7 +192,7 @@ describe("runPipeline", () => {
     await runPipeline(
       child,
       [parent],
-      { request: baseReq, abort: new AbortController().signal },
+      { request: { ...baseReq, visual_requested: true }, abort: new AbortController().signal },
       {
         router: makeRouter({ answer: "Answer with [[term]].", visual: "NOT JSON AT ALL", meta: { title: "T" } }),
         nodes,
@@ -212,6 +212,40 @@ describe("runPipeline", () => {
     expect(failed).toBeDefined();
     expect(failed!.message).toMatch(/couldn't be read/);
     expect(events.some((e) => e.type === "done")).toBe(true); // pipeline finished normally
+  });
+
+  it.each([{}, { compare: true }, { mode: "compare" as const }, { branch_origin: "term_chip" as const, mode: "explain" as const }])("never generates a visual for a regular ask (%j)", async (requestOverrides) => {
+    const { nodes, parent, dir, close } = setup();
+    const child = makeChild(parent, nodes);
+    const router = makeRouter({ answer: "An explanation with [[water vapor]].", meta: { title: "Rain" } });
+    const generation = vi.spyOn(router, "generateWithFailover");
+    const events: AskEvent[] = [];
+    await runPipeline(child, [parent], { request: { ...baseReq, ...requestOverrides }, abort: new AbortController().signal }, { router, nodes }, (e) => events.push(e));
+    const stored = nodes.get(child.id);
+    close();
+    fs.rmSync(dir, { recursive: true, force: true });
+
+    expect(generation).toHaveBeenCalledTimes(1); // the streamed answer only
+    expect(stored?.visual).toBeNull();
+    expect(stored?.status).toBe("complete");
+    expect(events.some((e) => e.type === "visual" || e.type === "visual_status")).toBe(false);
+  });
+
+  it.each([{}, { title: 123, followups: "invalid", tags: {} }])("recovers actual concepts without markers even when other metadata is malformed (%j)", async (metaOverrides) => {
+    const { nodes, parent, dir, close } = setup();
+    const child = makeChild(parent, nodes);
+    const events: AskEvent[] = [];
+    try {
+      await runPipeline(child, [parent], { request: baseReq, abort: new AbortController().signal }, {
+        router: makeRouter({ answer: "Water vapor cools. Condensation makes droplets, which become rain.", meta: { title: "Rain", key_terms: ["water vapor", "unicorns", "brain", "CONDENSATION", "Water vapor", 123], ...metaOverrides } }), nodes,
+      }, (event) => events.push(event));
+      expect(nodes.get(child.id)?.key_terms).toEqual(["Water vapor", "Condensation"]);
+      expect(events.find((event) => event.type === "stage2")).toMatchObject({ key_terms: ["Water vapor", "Condensation"] });
+      expect(nodes.get(child.id)?.answer_text).toBe("Water vapor cools. Condensation makes droplets, which become rain.");
+    } finally {
+      close();
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
   });
 
   it("marks the node failed and emits error when stage 1 blows up", async () => {

@@ -48,10 +48,10 @@ const CAPABILITIES = [
 ] as const;
 
 const TINTS: Record<string, string> = {
-  spark: "text-spark-400 bg-spark-500/12",
-  sky: "text-sky-400 bg-sky-500/12",
-  amber: "text-amber-500 bg-amber-500/12",
-  green: "text-emerald-400 bg-emerald-500/12",
+  spark: "text-spark-400 bg-spark-500/10",
+  sky: "text-sky-400 bg-sky-500/10",
+  amber: "text-amber-500 bg-amber-500/10",
+  green: "text-emerald-400 bg-emerald-500/10",
 };
 
 /**
@@ -75,7 +75,7 @@ export function HomePage({ creating, askBusy = false, onAsk, onOpenSettings }: P
   // Autofocus the composer once so choosing an example doesn't re-steal focus mid-flow.
   useEffect(() => {
     const t = window.setTimeout(() => {
-      composerRef.current?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+      composerRef.current?.querySelector<HTMLTextAreaElement>("textarea")?.focus({ preventScroll: true });
     }, 50);
     return () => window.clearTimeout(t);
   }, []);
@@ -176,11 +176,11 @@ export function HomePage({ creating, askBusy = false, onAsk, onOpenSettings }: P
             className="text-fog-300 mt-3 text-center text-base sm:text-lg max-w-lg animate-fade-up"
             style={{ animationDelay: "80ms" }}
           >
-            Ask Ponder anything. Explore ideas, understand concepts, and think deeper.
+            Start with a question. Follow the connections. Make an idea your own.
           </p>
 
           {/* the main interaction on the page */}
-          <div className="w-full max-w-2xl mt-7 animate-fade-up" style={{ animationDelay: "120ms" }} ref={composerRef}>
+          <div className="w-full max-w-2xl mt-8 animate-fade-up" style={{ animationDelay: "120ms" }} ref={composerRef}>
             <GlobalPromptBar
               variant="hero"
               placeholder={askBusy ? "Ponder is thinking about your last question…" : "Ask Ponder anything…"}
@@ -232,7 +232,8 @@ export function HomePage({ creating, askBusy = false, onAsk, onOpenSettings }: P
             {EXAMPLES.map(({ q, Icon, tint }, i) => (
               <button
                 key={q}
-                className="example-card group flex items-center gap-3 text-left rounded-xl border border-ink-700/80 bg-ink-900/50 hover:bg-ink-850/80 hover:border-spark-500/50 px-3.5 py-3 animate-fade-up"
+                className="example-card group flex items-center gap-3 text-left rounded-2xl border border-ink-700/80 bg-ink-900/60 hover:bg-ink-850 hover:border-spark-500/50 px-4 py-4 animate-fade-up disabled:opacity-50"
+                disabled={creating || askBusy}
                 style={{ animationDelay: `${140 + i * 40}ms` }}
                 onClick={() =>
                   onAsk({ parent_id: null, branch_origin: "thread", question: q, position: { x: 0, y: 0 }, model_speed: "fast", web_search: false })
@@ -278,7 +279,7 @@ export function HomePage({ creating, askBusy = false, onAsk, onOpenSettings }: P
                     }
                   } else {
                     // Think deeper: focus the composer so the ask flow starts from curiosity
-                    composerRef.current?.querySelector<HTMLInputElement>("input")?.focus();
+                    composerRef.current?.querySelector<HTMLTextAreaElement>("textarea")?.focus();
                   }
                 }}
                 title={

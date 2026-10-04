@@ -1,4 +1,4 @@
-import type { NodeEntity, AskEvent, AskRequest } from "@canvas-learn/shared";
+import type { NodeEntity, AskEvent, AskRequest, ImageSpec } from "@canvas-learn/shared";
 import type { ModelRouter } from "../llm/router.js";
 import type { NodeRepo } from "../db/repos.js";
 import {
@@ -26,7 +26,7 @@ import {
   provenancePrompt,
 } from "./prompts.js";
 import type { LearningProfile } from "@canvas-learn/shared";
-import { parseVisualSpec } from "@canvas-learn/shared";
+import { parseVisualSpec, ImageSpec as ImageSpecSchema, createTermMatcher } from "@canvas-learn/shared";
 import { extractJsonLenient } from "../llm/router.js";
 import { webSearch, formatSnippetsForPrompt } from "./webSearch.js";
 import { deriveCanvasTitle } from "../db/canvasTitles.js";
@@ -82,7 +82,10 @@ export async function generateVisual(
       const jsonText = extractJsonLenient(r.text);
       if (!jsonText) throw new Error("model output contained no JSON object");
       const parsed = parseVisualSpec(normalizeVisualPayload(JSON.parse(jsonText)));
-      if (parsed.ok && parsed.block) return parsed.block;
+      // Text-model diagram calls must never masquerade as picture generation.
+      // Image blocks are accepted for persistence, but only the Image API creates
+      // them; a chat model emitting a data URL is not a generated picture.
+      if (parsed.ok && parsed.block && parsed.block.type !== "image") return parsed.block;
       // Model answered but the output didn't validate — log for diagnosis,
       // retry once with the stricter prompt, then report the real failure.
       console.error(`[visual] rejected model output (attempt ${attempt + 1}): ${r.text.slice(0, 400)}`);
@@ -99,6 +102,34 @@ export async function generateVisual(
     );
   }
   throw new Error("Visual generation failed: the model's output couldn't be read as a valid visual — try again.");
+}
+
+/** Generate a genuinely visual picture, only from an explicit user action. */
+export async function generatePicture(
+  question: string,
+  answer: string,
+  abort: AbortSignal,
+  router: ModelRouter,
+): Promise<{ type: "image"; status: "ready"; spec: ImageSpec }> {
+  const prompt = [
+    "Create an engaging educational illustration for a learning canvas.",
+    "Show the core idea visually with a clear focal subject, useful composition, accurate relationships, and an intriguing but polished editorial style.",
+    "Do not render explanatory paragraphs, fake UI, watermarks, or small text. Avoid labels unless a very short label is essential; the learner will read the explanation separately.",
+    `Question: ${question.slice(0, 2000)}`,
+    `Explanation: ${answer.replace(/\[\[|\]\]/g, "").slice(0, 5000)}`,
+  ].join("\n\n");
+  const image = await router.generateImage(prompt, abort);
+  return {
+    type: "image",
+    status: "ready",
+    spec: ImageSpecSchema.parse({
+      data_url: image.dataUrl,
+      media_type: image.mediaType,
+      prompt,
+      alt: `Educational illustration: ${question}`.slice(0, 500),
+      model: image.model,
+    }),
+  };
 }
 
 const DIAGRAM_VISUAL_TYPES = new Set(["cycle_diagram", "flowchart", "timeline"]);
@@ -172,10 +203,11 @@ export interface PipelineCall {
 }
 
 /**
- * Run the staged pipeline for one node, emitting AskEvents to the SSE channel.
+ * Run the answer pipeline for one node, emitting AskEvents to the SSE channel.
  * - Stage 1: streamed answer with [[term]] markup
  * - Stage 2: title/followups/tags (small JSON call)
- * - Stage 3: async visual with status events and retry-then-none fallback
+ * Visuals are on demand through POST /api/visual, or an explicit concept
+ * Visualize click (`visual_requested`). Regular asks never request a visual.
  * Also generates per-node context summaries for long chains.
  */
 export async function runPipeline(
@@ -246,7 +278,7 @@ export async function runPipeline(
         system: STAGE1_SYSTEM,
         prompt: prompt1,
         temperature: 0.7,
-        maxTokens: 400,
+        maxTokens: 650,
         abort,
       },
       (chunk) => {
@@ -281,16 +313,30 @@ export async function runPipeline(
     let followups: string[] = [];
     let tags: string[] = [];
     try {
-      const meta = (await router.generateJson(speed, {
+      const rawMeta = await router.generateJson(speed, {
         system: STAGE2_SYSTEM,
         prompt: stage2Prompt(node.question, answer),
         temperature: 0.4,
         maxTokens: 300,
         abort,
-      })) as { title?: string; followups?: string[]; tags?: string[] };
-      title = (meta.title ?? "").slice(0, 60);
-      followups = (meta.followups ?? []).filter((s) => typeof s === "string").slice(0, 4);
-      tags = (meta.tags ?? []).filter((s) => typeof s === "string").slice(0, 3);
+      });
+      const meta = (rawMeta && typeof rawMeta === "object" ? rawMeta : {}) as { title?: unknown; followups?: unknown; tags?: unknown; key_terms?: unknown };
+      title = typeof meta.title === "string" ? meta.title.slice(0, 60) : "";
+      followups = Array.isArray(meta.followups) ? meta.followups.filter((s): s is string => typeof s === "string").slice(0, 4) : [];
+      tags = Array.isArray(meta.tags) ? meta.tags.filter((s): s is string => typeof s === "string").slice(0, 3) : [];
+      // The answer model may omit [[markers]]. Reuse the metadata call to recover
+      // clickable concepts, accepting only phrases actually present in the answer.
+      const seen = new Set(keyTerms.map((term) => term.trim().toLowerCase()));
+      const plainAnswer = answer.replace(/\[\[|\]\]/g, "");
+      for (const candidate of Array.isArray(meta.key_terms) ? meta.key_terms.slice(0, 16) : []) {
+        if (keyTerms.length >= 4) break;
+        if (typeof candidate !== "string") continue;
+        const match = createTermMatcher([candidate])?.exec(plainAnswer);
+        const term = match?.[0].replace(/\s+/g, " ").trim();
+        if (!term || seen.has(term.toLowerCase())) continue;
+        seen.add(term.toLowerCase());
+        keyTerms.push(term);
+      }
     } catch {
       // stage-2 failure degrades gracefully: no title/followups/tags
     }
@@ -313,7 +359,7 @@ export async function runPipeline(
     });
 
     // Emit stage2 NOW, the moment the answer is settled — BEFORE the non-fatal
-    // enhancement calls (gaps/sections/summary/visual) below. On slow free-tier
+    // enhancement calls (gaps/sections/summary) below. On slow free-tier
     // models those calls can take minutes, and the client uses stage2 as the
     // "this turn is done" signal to unlock the composer; waiting for them left
     // the UI locked long after the answer was on screen.
@@ -323,6 +369,7 @@ export async function runPipeline(
       title,
       followups,
       tags,
+      key_terms: keyTerms,
     });
 
     // Conversation title: notify the caller NOW (at settle), not at pipeline
@@ -331,6 +378,21 @@ export async function runPipeline(
       call.onAnswerSettled?.(node.id, title, node.question);
     } catch {
       // naming is best-effort; never fail the ask over it
+    }
+
+    // A Source Explorer Visualize click may need to create a concept's answer
+    // node first. Honor that explicit action, but never infer it from the question,
+    // compare mode, or profile; normal asks leave visual completely untouched.
+    if (req.visual_requested === true) {
+      emit({ type: "visual_status", node_id: node.id, status: "generating", message: "Creating a diagram..." });
+      try {
+        const block = await generateVisual(node.question, answer, "quality", abort, router, req.compare ? "comparison_table" : undefined);
+        nodes.update(node.id, { visual: block });
+        emit({ type: "visual", node_id: node.id, block });
+      } catch (err) {
+        nodes.update(node.id, { visual: { type: "none", status: "failed", spec: null } });
+        emit({ type: "visual_status", node_id: node.id, status: "failed", message: err instanceof Error ? err.message : "Visual generation failed" });
+      }
     }
 
     // ---- stage 2.45: knowledge gaps (thinking-spec §19) — non-fatal, complete answers only ----
@@ -396,13 +458,13 @@ export async function runPipeline(
           system: SECTIONS_SYSTEM,
           prompt: sectionsPrompt(node.question, answer),
           temperature: 0.3,
-          maxTokens: 500,
+          maxTokens: 800,
           abort,
         })) as { sections?: { heading?: string; body?: string }[] };
         const sections = (sec.sections ?? [])
           .filter((s) => s && typeof s.heading === "string" && typeof s.body === "string")
           .slice(0, 5)
-          .map((s) => ({ heading: s.heading!.slice(0, 60), body: s.body!.slice(0, 600) }));
+          .map((s) => ({ heading: s.heading!.slice(0, 60), body: s.body!.slice(0, 900) }));
         // Always overwrite: regeneration must replace (or clear) stale sections
         // rather than keep filler from a previous failed attempt.
         nodes.update(node.id, { sections });
@@ -426,25 +488,7 @@ export async function runPipeline(
       }
     }
 
-    // ---- stage 3: async visual with own status states (PRD FR13) ----
-    // A visual failure must NOT fail the completed answer: record an honest
-    // "failed" visual block (the card shows the state and the Visualize action
-    // is the retry path) and emit the real message as a visual_status event.
-    emit({ type: "visual_status", node_id: node.id, status: "generating", message: "Creating a visual..." });
-    try {
-      const block = await generateVisual(node.question, answer, speed, abort, router, req.compare === true ? "comparison_table" : undefined, () =>
-        emit({ type: "visual_status", node_id: node.id, status: "generating", message: "Generating visuals..." }),
-      );
-      nodes.update(node.id, { visual: block });
-      emit({ type: "visual", node_id: node.id, block });
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Visual generation failed";
-      nodes.update(node.id, { visual: { type: "none", status: "failed", spec: null } });
-      emit({ type: "visual_status", node_id: node.id, status: "failed", message });
-    }
-
-    // Carry the final persisted node so the client card reflects everything written
-    // after stage 2 (provenance, gaps, sections, context summary, visual).
+    // Carry the final persisted node so the client card reflects enhancements.
     const finalNode = nodes.get(node.id);
     emit(finalNode ? { type: "done", node_id: node.id, node: finalNode } : { type: "done", node_id: node.id });
   } catch (err) {
@@ -453,5 +497,3 @@ export async function runPipeline(
     emit({ type: "error", node_id: node.id, message });
   }
 }
-
-

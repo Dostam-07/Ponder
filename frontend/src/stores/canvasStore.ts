@@ -33,6 +33,8 @@ export interface CanvasState {
   /** this canvas's thinking map (thinking-spec §3), when generated */
   map: ThinkingMap | null;
   streamingIds: Set<string>;
+  /** Actionable errors from automatic visual generation, keyed by node. */
+  visualErrors: Record<string, string>;
   /** Set on `node_created`; consumed by CanvasStage once the node's layout is stable. */
   focusRequest: FocusRequest | null;
   /** Last viewport per canvas (in-session memory; restored when navigating back). */
@@ -87,6 +89,7 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
   profile: null,
   map: null,
   streamingIds: new Set<string>(),
+  visualErrors: {},
   focusRequest: null,
   viewports: {},
   past: [],
@@ -113,6 +116,7 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
       past: [],
       future: [],
       streamingIds: new Set(),
+      visualErrors: {},
     });
   },
 
@@ -127,6 +131,8 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
       profile: null,
       map: null,
       focusRequest: null,
+      streamingIds: new Set(),
+      visualErrors: {},
       past: [],
       future: [],
     }),
@@ -182,6 +188,7 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
               title: e.title || cur.title,
               suggested_followups: e.followups.length ? e.followups : cur.suggested_followups,
               tags: e.tags.length ? e.tags : cur.tags,
+              key_terms: e.key_terms ?? cur.key_terms,
               status: "complete",
             },
           },
@@ -196,13 +203,22 @@ export const useCanvasStore = create<CanvasStore>((set, get) => ({
           status: e.status,
           spec: cur.visual?.spec ?? null,
         };
-        set((st) => ({ nodes: { ...st.nodes, [e.node_id]: { ...cur, visual } } }));
+        set((st) => {
+          const visualErrors = { ...st.visualErrors };
+          if (e.status === "failed") visualErrors[e.node_id] = e.message;
+          else delete visualErrors[e.node_id];
+          return { nodes: { ...st.nodes, [e.node_id]: { ...cur, visual } }, visualErrors };
+        });
         break;
       }
       case "visual": {
         const cur = s.nodes[e.node_id];
         if (!cur) break;
-        set((st) => ({ nodes: { ...st.nodes, [e.node_id]: { ...cur, visual: e.block as VisualBlock } } }));
+        set((st) => {
+          const visualErrors = { ...st.visualErrors };
+          delete visualErrors[e.node_id];
+          return { nodes: { ...st.nodes, [e.node_id]: { ...cur, visual: e.block as VisualBlock } }, visualErrors };
+        });
         break;
       }
       case "done": {

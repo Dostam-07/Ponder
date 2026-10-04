@@ -4,6 +4,7 @@ interface CanvasCtx {
   openPath: () => void;
   openMap: () => void;
   toast: (message: string) => void;
+  askBusy?: boolean;
 }
 
 export const CanvasContext = createContext<CanvasCtx>({ openPath: () => {}, openMap: () => {}, toast: () => {} });

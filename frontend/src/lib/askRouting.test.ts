@@ -27,7 +27,7 @@ describe("resolveAskTarget — Home questions always get a fresh canvas", () => 
   });
 
   it("routes questions from other non-canvas pages (library/graph/review) to a new canvas", () => {
-    for (const page of ["library", "graph", "review", "settings"] as const) {
+    for (const page of ["library", "graph", "review", "settings", "canvases"] as const) {
       expect(resolveAskTarget("home", { page }, [CANVAS_A])).toEqual({ kind: "new-canvas" });
     }
   });
@@ -96,10 +96,17 @@ describe("parseHash / routeToHash — refresh and direct-link safety", () => {
     expect(parseHash("#/")).toEqual({ page: "home" });
   });
 
+  it("opens history for Canvas navigation without choosing an existing canvas", () => {
+    expect(parseHash("#/canvases")).toEqual({ page: "canvases" });
+    expect(parseHash("#/canvas")).toEqual({ page: "canvases" });
+    expect(routeToHash({ page: "canvases" })).toBe("#/canvases");
+  });
+
   it("round-trips every route", () => {
     const routes = [
       { page: "canvas" as const, canvasId: CANVAS_A },
       { page: "home" as const },
+      { page: "canvases" as const },
       { page: "library" as const },
       { page: "graph" as const },
       { page: "settings" as const },

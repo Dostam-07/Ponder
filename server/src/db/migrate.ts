@@ -144,6 +144,7 @@ export function runMigrations(sqlite: Sqlite): void {
   addCol("nodes", "sections TEXT NOT NULL DEFAULT '[]'");
   addCol("nodes", "note TEXT NOT NULL DEFAULT ''");
   addCol("nodes", "important INTEGER NOT NULL DEFAULT 0");
+  addCol("nodes", "visual_error TEXT");
 
   // ---- v3: thinking layer (modes, sources, gaps, thinking maps) ----
   addCol("nodes", "mode TEXT NOT NULL DEFAULT ''");

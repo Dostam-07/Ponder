@@ -4,6 +4,27 @@ import { VisualStatus } from "./visual.js";
 import { LearningProfile } from "./learning.js";
 import { ThinkingMode } from "./node.js";
 
+/** Server-side connection preferences. The key is accepted on writes only. */
+export const OpenRouterPreferences = z.object({
+  api_key: z.string().trim().max(512).refine((v) => v === "" || v.length >= 16, "Enter a complete OpenRouter API key").nullable().default(null),
+  image_model: z.string().trim().min(1).max(200).regex(/^[\w.-]+\/[\w.:-]+$/, "Use an OpenRouter model ID, such as google/gemini-2.5-flash-image").nullable().default(null),
+  prefer_openrouter: z.boolean().nullable().default(null),
+});
+export type OpenRouterPreferences = z.infer<typeof OpenRouterPreferences>;
+export const UpdateOpenRouterPreferences = OpenRouterPreferences.partial();
+export type UpdateOpenRouterPreferences = z.infer<typeof UpdateOpenRouterPreferences>;
+
+/** Only redacted metadata is exposed by Settings and health endpoints. */
+export interface OpenRouterSettings {
+  configured: boolean;
+  key_source: "settings" | "env" | "none";
+  key_hint: string;
+  has_env_key: boolean;
+  image_model: string;
+  image_model_source: "settings" | "env" | "default";
+  prefer_openrouter: boolean;
+}
+
 /** Events streamed by POST /api/nodes/ask (SSE over fetch ReadableStream). */
 export const AskEvent = z.discriminatedUnion("type", [
   z.object({ type: z.literal("node_created"), node: NodeEntity }),
@@ -16,6 +37,7 @@ export const AskEvent = z.discriminatedUnion("type", [
     title: z.string(),
     followups: z.array(z.string()),
     tags: z.array(z.string()),
+    key_terms: z.array(z.string()).optional(),
   }),
   z.object({ type: z.literal("visual_status"), node_id: z.string(), status: VisualStatus, message: z.string() }),
   z.object({ type: z.literal("visual"), node_id: z.string(), block: z.unknown() }),
@@ -50,8 +72,10 @@ export const AskRequest = z.object({
   material_id: z.string().uuid().optional(),
   /** Ask style override (spec §17) — rephrases stage-1 instructions for this ask only. */
   explain_like: z.string().max(120).optional(),
-  /** Compare request (spec §16): "A vs B" becomes a comparison-table visual. */
+  /** Prefer a comparison table when a diagram is explicitly requested. */
   compare: z.boolean().optional(),
+  /** Explicit Visualize click for a concept that needs an answer node first. */
+  visual_requested: z.boolean().optional(),
   /** Thinking mode (thinking-spec §2, research-spec §7): changes HOW the answer is produced. */
   mode: ThinkingMode.optional(),
   /** Challenge/why/apply/create/research extras: the claim or reasoning to inspect. */

@@ -3,6 +3,7 @@ import { ProviderError } from "./provider.js";
 import { OllamaProvider } from "./ollama.js";
 import { OpenRouterProvider } from "./openrouter.js";
 import { resolveModels, type ModelsConfig } from "./modelConfig.js";
+import type { OpenRouterPreferences, OpenRouterSettings } from "@canvas-learn/shared";
 
 export type ModelSpeed = "fast" | "quality";
 
@@ -13,11 +14,10 @@ export interface ModelRouterConfig {
 }
 
 // Documented FALLBACK defaults — the last rung of the precedence ladder
-// (env var > saved preference > these). They are models whose /api/chat path is
-// verified working on this machine (CPU-only): qwen2.5:7b and the 14b instruct
-// hang indefinitely on chat calls (live diagnosis 2026-10-03 — zero tokens for
-// 3+ min, both streaming and blocking, across Ollama restarts), while these
-// sustain 2.8–4.9 tok/s warm.
+// (env var > saved preference > these). The qwen2.5:7b and 14b instruct models
+// hang indefinitely on chat calls on this CPU-only machine (live diagnosis
+// 2026-10-03 — zero tokens for 3+ min, both streaming and blocking, across
+// Ollama restarts), while these verified defaults sustain 2.8–4.9 tok/s warm.
 const BASE_DEFAULTS: Omit<ModelRouterConfig, "preferOpenRouter"> = {
   fastModel: "llama3.2:3b",
   qualityModel: "gemma3:4b",
@@ -39,6 +39,8 @@ export class ModelRouter {
   readonly ollama = new OllamaProvider();
   readonly openrouter = new OpenRouterProvider();
   private cfg: ModelRouterConfig;
+  private readonly defaultPreferOpenRouter: boolean;
+  private savedOpenRouter: OpenRouterPreferences = { api_key: null, image_model: null, prefer_openrouter: null };
   /** Locally saved model preferences (Settings UI) — the second precedence rung. */
   private savedModels: { fast: string | null; quality: string | null } = { fast: null, quality: null };
   /** Installed Ollama model names (10-min cache). null = never discovered. */
@@ -57,6 +59,33 @@ export class ModelRouter {
 
   constructor(cfg: Partial<ModelRouterConfig> = {}) {
     this.cfg = { ...DEFAULTS, ...cfg };
+    this.defaultPreferOpenRouter = this.cfg.preferOpenRouter;
+  }
+
+  setOpenRouterSettings(preferences: OpenRouterPreferences) {
+    const keyChanged = this.savedOpenRouter.api_key !== preferences.api_key;
+    this.savedOpenRouter = preferences;
+    this.openrouter.configure(preferences.api_key, preferences.image_model);
+    this.cfg.preferOpenRouter = preferences.prefer_openrouter ?? this.defaultPreferOpenRouter;
+    if (keyChanged) {
+      this.freeModels = [];
+      this.freeModelsFetched = false;
+      this.lastFreeFetch = 0;
+      this.rr = 0;
+      this.cooldowns.clear();
+    }
+  }
+
+  openRouterSettings(): OpenRouterSettings {
+    return {
+      configured: this.openrouter.configured,
+      key_source: this.savedOpenRouter.api_key !== null ? "settings" : this.openrouter.configured ? "env" : "none",
+      key_hint: this.openrouter.keyHint,
+      has_env_key: !!process.env.OPENROUTER_API_KEY?.trim(),
+      image_model: this.openrouter.imageModel,
+      image_model_source: this.savedOpenRouter.image_model ? "settings" : process.env.OPENROUTER_IMAGE_MODEL?.trim() ? "env" : "default",
+      prefer_openrouter: this.cfg.preferOpenRouter,
+    };
   }
 
   /** Store the Settings-UI model preferences (second precedence rung). */
@@ -68,9 +97,9 @@ export class ModelRouter {
    * Refresh the installed-model list from Ollama (10-minute cache, tolerant of
    * Ollama being down — models live on disk, so a stale list stays valid).
    */
-  async ensureInstalledModels(): Promise<string[]> {
+  async ensureInstalledModels(force = false): Promise<string[]> {
     const now = Date.now();
-    if (this.installedNames != null && now - this.installedCheckedAt < 600_000) return this.installedNames;
+    if (!force && this.installedNames != null && now - this.installedCheckedAt < 600_000) return this.installedNames;
     try {
       const caps = await this.ollama.capabilities();
       if (caps && typeof caps === "object" && "models" in caps) {
@@ -204,7 +233,8 @@ export class ModelRouter {
       fast_saved_ignore_reason: eff.fast.savedIgnoreReason,
       quality_saved_ignored: eff.quality.savedIgnored,
       quality_saved_ignore_reason: eff.quality.savedIgnoreReason,
-      openrouter_keyed: this.openrouter.hasKey,
+      openrouter_keyed: this.openrouter.configured,
+      openrouter_quota_limited: this.openrouter.dailyLimitHit,
       prefer_openrouter: this.cfg.preferOpenRouter,
       openrouter_free_models: free,
     };
@@ -371,6 +401,11 @@ export class ModelRouter {
         prompt: `${opts.prompt}\n\nIMPORTANT: Output ONLY the JSON object, starting with { and ending with }. No commentary, no markdown fences.`,
       });
     }
+  }
+
+  /** Picture generation is intentionally explicit and never falls back to text models. */
+  async generateImage(prompt: string, abort?: AbortSignal) {
+    return this.openrouter.generateImage(prompt, abort);
   }
 }
 

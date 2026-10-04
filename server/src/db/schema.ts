@@ -24,6 +24,7 @@ export const nodes = sqliteTable("nodes", {
   visual_type: text("visual_type"), // VisualType | null
   visual_status: text("visual_status"), // VisualStatus | null
   visual_spec: text("visual_spec"), // JSON | null
+  visual_error: text("visual_error"), // JSON: safe failure message/code | null
   position_x: real("position_x").notNull().default(0),
   position_y: real("position_y").notNull().default(0),
   width: real("width").notNull().default(420),

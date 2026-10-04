@@ -19,6 +19,8 @@ import type {
   CanvasSources,
   Artifact,
   ArtifactKind,
+  OpenRouterSettings,
+  UpdateOpenRouterPreferences,
 } from "@canvas-learn/shared";
 
 /** Cross-canvas conceptual bridge (thinking-spec §6), served from real exploration history. */
@@ -48,12 +50,32 @@ export interface SettingsModels {
   ollamaReachable: boolean;
 }
 
+export interface Health {
+  ok: boolean;
+  ollama_reachable: boolean;
+  local_models: string[];
+  fast_model: string;
+  quality_model: string;
+  openrouter_keyed: boolean;
+  openrouter_quota_limited: boolean;
+  prefer_openrouter: boolean;
+  openrouter_free_models: string[];
+}
+
 const BASE = "/api";
+
+export class ApiError extends Error {
+  constructor(message: string, public readonly status: number, public readonly code?: string) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
 
 async function json<T>(res: Response): Promise<T> {
   if (!res.ok) {
     const body = await res.json().catch(() => ({ error: res.statusText }));
-    throw new Error((body as { error?: string }).error ?? `HTTP ${res.status}`);
+    const error = body as { error?: string; code?: string };
+    throw new ApiError(error.error ?? `HTTP ${res.status}`, res.status, error.code);
   }
   return res.json() as Promise<T>;
 }
@@ -81,9 +103,20 @@ export interface BackupInfo {
 }
 
 export const api = {
-  health: () => fetch(`${BASE}/health`).then((r) => r.json()),
+  health: () => fetch(`${BASE}/health`).then((r) => json<Health>(r)),
+
+  settingsOpenRouter: () => fetch(`${BASE}/settings/openrouter`).then((r) => json<OpenRouterSettings>(r)),
+  saveSettingsOpenRouter: (body: UpdateOpenRouterPreferences) =>
+    fetch(`${BASE}/settings/openrouter`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).then((r) => json<OpenRouterSettings>(r)),
+  testOpenRouter: () =>
+    fetch(`${BASE}/settings/openrouter/test`, { method: "POST" }).then((r) => json<{ ok: boolean; message: string }>(r)),
 
   settingsModels: () => fetch(`${BASE}/settings/models`).then((r) => json<SettingsModels>(r)),
+  refreshSettingsModels: () => fetch(`${BASE}/settings/models?refresh=1`).then((r) => json<SettingsModels>(r)),
   saveSettingsModels: (body: { fast?: string | null; quality?: string | null }) =>
     fetch(`${BASE}/settings/models`, {
       method: "PUT",
@@ -96,7 +129,7 @@ export const api = {
       r.ok ? json<{ results: SearchHit[] }>(r) : json<{ error: string }>(r).then((b) => Promise.reject(new Error(b.error))),
     ),
 
-  listBackups: () => fetch(`${BASE}/backups`).then((r) => json<{ backups: BackupInfo[] }>(r)),
+  listBackups: () => fetch(`${BASE}/backups`).then((r) => json<{ backups: BackupInfo[]; database_path: string; backups_path: string }>(r)),
   createBackup: (label?: string) =>
     fetch(`${BASE}/backups`, {
       method: "POST",
@@ -123,7 +156,9 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title }),
     }).then((r) => json<CanvasEntity>(r)),
-  deleteCanvas: (id: string) => fetch(`${BASE}/canvases/${id}`, { method: "DELETE" }),
+  deleteCanvas: (id: string) => fetch(`${BASE}/canvases/${id}`, { method: "DELETE" }).then(async (res) => {
+    if (!res.ok) await json<never>(res);
+  }),
 
   graph: (canvasId: string) => fetch(`${BASE}/canvases/${canvasId}/graph`).then((r) => json<GraphResponse>(r)),
 
@@ -328,17 +363,13 @@ export const api = {
     }).then((r) => json<{ id: string; source: string; target: string; label: string }>(r)),
   deleteLink: (id: string) => fetch(`${BASE}/links/${id}`, { method: "DELETE" }),
 
-  generateVisual: (body: { node_id?: string; question?: string; text: string; compare?: boolean }, signal?: AbortSignal) =>
+  generateVisual: (body: { node_id?: string; question?: string; text: string; kind?: "diagram" | "picture"; compare?: boolean }, signal?: AbortSignal) =>
     fetch(`${BASE}/visual`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
       signal,
-    }).then((r) =>
-      r.ok
-        ? json<{ visual: NodeEntity["visual"] }>(r)
-        : json<{ error: string }>(r).then((b) => Promise.reject(new Error(b.error))),
-    ),
+    }).then((r) => json<{ visual: NodeEntity["visual"] }>(r)),
 
   // ---------- artifacts (generated from this canvas's real Q&A) ----------
   canvasArtifacts: (canvasId: string) => fetch(`${BASE}/canvases/${canvasId}/artifacts`).then((r) => json<Artifact[]>(r)),
