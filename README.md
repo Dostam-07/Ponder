@@ -258,6 +258,11 @@ Run locally with `npm run dev`; make sure `npm run typecheck` and `npm test` pas
 **Ponder** — not just the answer, but what to do next with it.
 
 </div>
-#   P o n d e r  
- #   P o n d e r  
- 
+
+<div align="center">
+
+Made with 💖 & ☕ by Dostam
+
+</div>
+
+#
