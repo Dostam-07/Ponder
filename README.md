@@ -316,3 +316,14 @@ Run locally with `npm run dev`; make sure `npm run typecheck` and `npm test` pas
 **Ponder** — not just the answer, but what to do next with it.
 
 </div>
+<<<<<<< HEAD
+=======
+
+<div align="center">
+
+Made with 💖 & ☕ by Dostam
+
+</div>
+
+#
+>>>>>>> c65a15922121e3460e842338548fb79bd3b91c13
