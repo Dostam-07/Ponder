@@ -333,10 +333,33 @@ export const OrbitIcon = (p: IconProps) => (
   </Svg>
 );
 
+/**
+ * Ponder brand mark — six connected nodes with S-curve arms,
+ * matching the app icon (purple gradient connected-network shape).
+ * Rendered as a fill icon using current colour so it inherits theme tints.
+ */
 export const PonderLogoIcon = (p: IconProps) => (
   <Svg {...p}>
-    <path d="M12 2l2.4 6.4L21 11l-6.6 2.6L12 20l-2.4-6.4L3 11l6.6-2.6L12 2z" />
-    <path d="M19 3l.7 1.8L21.5 5.5l-1.8.7L19 8l-.7-1.8-1.8-.7 1.8-.7L19 3z" strokeWidth="1.5" />
+    {/* top-left node + arm */}
+    <circle cx="5.2" cy="7.2" r="2.1" fill="currentColor" stroke="none" />
+    <path d="M6.8 8.6 C8.2 9.6 9.8 10.6 11 11.8 C9.8 10.6 8 10 6.8 8.6Z" fill="currentColor" stroke="none" />
+    {/* bottom-left node + arm */}
+    <circle cx="4.4" cy="16.8" r="2.1" fill="currentColor" stroke="none" />
+    <path d="M5.8 15.4 C7.4 14.2 9.4 13.2 11 12.2 C9.4 13.2 7.2 14 5.8 15.4Z" fill="currentColor" stroke="none" />
+    {/* top-center node + arm */}
+    <circle cx="12" cy="2.4" r="2.1" fill="currentColor" stroke="none" />
+    <path d="M11.2 4.4 C11.4 6.8 11.6 9.4 12 11.6 C12.4 9.4 12.6 6.8 12.8 4.4Z" fill="currentColor" stroke="none" />
+    {/* bottom-center node + arm */}
+    <circle cx="12" cy="21.6" r="2.1" fill="currentColor" stroke="none" />
+    <path d="M11.2 19.6 C11.4 17.2 11.6 14.6 12 12.4 C12.4 14.6 12.6 17.2 12.8 19.6Z" fill="currentColor" stroke="none" />
+    {/* top-right node + arm */}
+    <circle cx="18.8" cy="5.8" r="2.1" fill="currentColor" stroke="none" />
+    <path d="M17.2 7.2 C15.8 8.4 14.2 9.8 13 11 C14.2 9.8 16 9 17.2 7.2Z" fill="currentColor" stroke="none" />
+    {/* bottom-right node + arm */}
+    <circle cx="18.8" cy="18.2" r="2.1" fill="currentColor" stroke="none" />
+    <path d="M17.2 16.8 C15.8 15.6 14.2 14.2 13 13 C14.2 14.2 16 15 17.2 16.8Z" fill="currentColor" stroke="none" />
+    {/* center hub */}
+    <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
   </Svg>
 );
 

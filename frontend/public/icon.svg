@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="pg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#5B21B6"/>
+      <stop offset="45%"  stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
+  </defs>
+
+  <!--
+    Six dumbbell arms meeting at the center.
+    Each arm: two circles (endpoint + inner) joined by a tapered bezier ribbon.
+
+    Endpoint nodes (r=46):
+      TL  top-left    (130, 186)
+      BL  bot-left    (112, 320)
+      TC  top-center  (256, 108)
+      BC  bot-center  (256, 404)
+      TR  top-right   (376, 156)
+      BR  bot-right   (376, 356)
+
+    Inner waist nodes (r=30) sit about 60% along each arm toward center (256,256):
+      TL-inner  (200, 226)
+      BL-inner  (188, 294)
+      TC-inner  (256, 186)
+      BC-inner  (256, 326)
+      TR-inner  (316, 196)
+      BR-inner  (316, 316)
+  -->
+
+  <!-- === ARMS (filled ribbon between endpoint and inner node) === -->
+
+  <!-- Top-left arm ribbon -->
+  <path d="
+    M 130,140  A 46,46 0 0 1 176,186  C 176,210 230,220 230,226
+    A 30,30 0 0 1 170,226             C 170,220 108,212 84,186
+    A 46,46 0 0 1 130,140 Z
+  " fill="url(#pg)"/>
+
+  <!-- Bot-left arm ribbon -->
+  <path d="
+    M 66,320  A 46,46 0 0 1 158,320  C 158,308 216,300 216,294
+    A 30,30 0 0 1 160,294            C 160,300 66,308 66,320 Z
+  " fill="url(#pg)"/>
+
+  <!-- Top-center arm ribbon -->
+  <path d="
+    M 210,108  A 46,46 0 0 1 302,108  C 296,140 286,176 286,186
+    A 30,30 0 0 1 226,186             C 226,176 216,140 210,108 Z
+  " fill="url(#pg)"/>
+
+  <!-- Bot-center arm ribbon -->
+  <path d="
+    M 210,404  A 46,46 0 0 0 302,404  C 296,372 286,336 286,326
+    A 30,30 0 0 0 226,326             C 226,336 216,372 210,404 Z
+  " fill="url(#pg)"/>
+
+  <!-- Top-right arm ribbon -->
+  <path d="
+    M 376,110  A 46,46 0 0 1 422,156  C 404,174 360,190 346,196
+    A 30,30 0 0 1 286,196            C 300,184 356,166 376,110 Z
+  " fill="url(#pg)"/>
+
+  <!-- Bot-right arm ribbon -->
+  <path d="
+    M 376,402  A 46,46 0 0 0 422,356  C 404,338 360,322 346,316
+    A 30,30 0 0 0 286,316            C 300,328 356,346 376,402 Z
+  " fill="url(#pg)"/>
+
+  <!-- === ENDPOINT CIRCLES === -->
+  <circle cx="130" cy="186" r="46" fill="url(#pg)"/>
+  <circle cx="112" cy="320" r="46" fill="url(#pg)"/>
+  <circle cx="256" cy="108" r="46" fill="url(#pg)"/>
+  <circle cx="256" cy="404" r="46" fill="url(#pg)"/>
+  <circle cx="376" cy="156" r="46" fill="url(#pg)"/>
+  <circle cx="376" cy="356" r="46" fill="url(#pg)"/>
+
+  <!-- === INNER WAIST CIRCLES === -->
+  <circle cx="200" cy="226" r="30" fill="url(#pg)"/>
+  <circle cx="188" cy="294" r="30" fill="url(#pg)"/>
+  <circle cx="256" cy="186" r="30" fill="url(#pg)"/>
+  <circle cx="256" cy="326" r="30" fill="url(#pg)"/>
+  <circle cx="316" cy="196" r="30" fill="url(#pg)"/>
+  <circle cx="316" cy="316" r="30" fill="url(#pg)"/>
+
+</svg>
