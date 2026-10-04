@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Theme tokens. :root = dark (original design), html.light = light.
+   Values are raw RGB triples so Tailwind alpha modifiers work in both themes.
+   Not a blind inversion — each slot is chosen for readability (see README).
+--------------------------------------------------------------------------- */
+:root {
+  --c-ink-950: 11 13 16;
+  --c-ink-900: 17 20 24;
+  --c-ink-850: 22 26 32;
+  --c-ink-800: 28 34 41;
+  --c-ink-700: 42 50 60;
+  --c-ink-600: 58 68 80;
+  --c-fog-400: 139 149 163;
+  --c-fog-300: 168 178 189;
+  --c-fog-200: 201 209 217;
+  --c-fog-100: 230 234 239;
+  --c-spark-500: 139 124 246;
+  --c-spark-400: 163 148 248;
+  --c-flame-500: 249 115 22;
+  --c-star-500: 250 204 21;
+  --c-dot: 58 68 80;
+  --c-edge: 90 100 115;
+  --c-shadow: 0 0 0;
+  --c-shadow-strength: 0.5;
+  color-scheme: dark;
+
+  /* Home hero backdrop (dark): deep navy-black with a soft aurora bloom behind the hero.
+     Layered, not flooded — the page content always sits on near-solid darkness. */
+  --c-hero-bg: 10 11 15;
+  --c-hero-aurora-1: 139 124 246; /* spark */
+  --c-hero-aurora-2: 56 130 246; /* soft blue */
+  --c-hero-aurora-opacity: 0.10;
+  --c-hero-hairline: 255 255 255; /* separator on home only */
+}
+
+html.light {
+  --c-ink-950: 247 248 250;
+  --c-ink-900: 255 255 255;
+  --c-ink-850: 255 255 255;
+  --c-ink-800: 241 243 246;
+  --c-ink-700: 228 231 236;
+  --c-ink-600: 205 211 219;
+  --c-fog-400: 110 118 130;
+  --c-fog-300: 82 90 102;
+  --c-fog-200: 55 65 81;
+  --c-fog-100: 17 24 39;
+  --c-spark-500: 109 92 230;
+  --c-spark-400: 91 75 212;
+  --c-flame-500: 234 88 12;
+  --c-star-500: 202 138 4;
+  --c-dot: 160 168 180;
+  --c-edge: 130 140 155;
+  --c-shadow: 15 23 42;
+  --c-shadow-strength: 0.08;
+  color-scheme: light;
+
+  /* Home hero backdrop (light): soft off-white with a faint violet tint from above. */
+  --c-hero-bg: 250 250 253;
+  --c-hero-aurora-1: 124 108 240;
+  --c-hero-aurora-2: 120 170 255;
+  --c-hero-aurora-opacity: 0.07;
+  --c-hero-hairline: 15 23 42;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-ink-950 text-fog-100 font-sans antialiased;
+  }
+  ::selection {
+    background: rgb(var(--c-spark-500) / 0.35);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--c-ink-600)) transparent;
+  }
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  a:focus-visible {
+    outline: 2px solid rgb(var(--c-spark-400));
+    outline-offset: 1px;
+  }
+}
+
+@layer components {
+  .dot-grid {
+    background-color: rgb(var(--c-ink-950));
+    background-image: radial-gradient(circle, rgb(var(--c-dot) / 0.55) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .node-card {
+    @apply bg-ink-850 border border-ink-700 rounded-xl;
+    box-shadow: 0 8px 24px rgb(var(--c-shadow) / var(--c-shadow-strength));
+  }
+  /* Visible selected state (roadmap E feedback): React Flow toggles this class on
+     the node wrapper when a card is clicked/selected. A soft ring + brighter
+     border so the user can tell which card they're acting on. */
+  .react-flow__node.selected > .node-card,
+  .react-flow__node:focus-visible > .node-card {
+    border-color: rgb(var(--c-spark-400) / 0.9);
+    box-shadow:
+      0 0 0 2px rgb(var(--c-spark-400) / 0.35),
+      0 8px 24px rgb(var(--c-shadow) / var(--c-shadow-strength));
+  }
+  .question-bubble {
+    @apply bg-ink-700 text-fog-100 rounded-lg px-3 py-1.5 text-sm;
+  }
+  .term-chip {
+    @apply inline-flex items-center gap-1 bg-ink-700/70 hover:bg-ink-600 text-spark-400 rounded-full px-2 py-0.5 text-xs cursor-pointer transition-colors;
+  }
+  .status-text {
+    @apply text-fog-400 text-xs animate-pulse;
+  }
+  /* React Flow's pane disables text selection for node dragging — re-enable it on
+     answer content so users can select text (Ask Ponder) inside node cards. */
+  .ponder-selectable {
+    user-select: text;
+    -webkit-user-select: text;
+    cursor: text;
+  }
+  .btn-primary {
+    @apply bg-spark-500 hover:bg-spark-400 text-white rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply text-fog-300 hover:text-fog-100 hover:bg-ink-700 rounded-md p-1.5 transition-colors;
+  }
+  .input-bar {
+    @apply bg-ink-800 border border-ink-600 rounded-xl px-3 py-2 text-sm text-fog-100 placeholder:text-fog-400 focus:outline-none focus:border-spark-500;
+  }
+  .popover-surface {
+    @apply bg-ink-850 border border-ink-700 rounded-xl;
+    box-shadow: 0 12px 32px rgb(var(--c-shadow) / calc(var(--c-shadow-strength) * 2));
+  }
+}
+
+/* React Flow theming: connector lines + handles follow the active theme */
+.react-flow__edge-path {
+  stroke: rgb(var(--c-edge));
+}
+/* Edge styles are set inline per-edge (dash/width); color follows the theme variable
+   so connectors stay visible in both light and dark (spec §13). */
+.react-flow__edge-path[style] {
+  stroke: rgb(var(--c-edge)) !important;
+}
+.react-flow__edge.concept-link .react-flow__edge-path[style] {
+  stroke: rgb(var(--c-spark-400)) !important;
+}
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: rgb(var(--c-spark-400));
+}
+.react-flow__handle {
+  opacity: 0;
+  pointer-events: none;
+}
+.react-flow__attribution {
+  display: none;
+}
+
+/* Ponder icon identity colors the sidebar mark */
+.ponder-mark {
+  color: rgb(var(--c-spark-400));
+}
+
+/* ---------------------------------------------------------------------------
+   Home experience — the launchpad. Deep, calm background; glow used only on
+   the mark, the focused composer, and the active nav state.
+--------------------------------------------------------------------------- */
+.home-surface {
+  background-color: rgb(var(--c-hero-bg));
+  background-image:
+    radial-gradient(ellipse 900px 480px at 50% -140px, rgb(var(--c-hero-aurora-1) / var(--c-hero-aurora-opacity)), transparent 70%),
+    radial-gradient(ellipse 700px 420px at 85% 8%, rgb(var(--c-hero-aurora-2) / calc(var(--c-hero-aurora-opacity) * 0.8)), transparent 70%);
+}
+
+/* Soft diagonal ripple hairline near the bottom of the hero (dark: white 4%, light: ink 6%). */
+.home-hairline {
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgb(var(--c-hero-hairline) / 0.05) 22%,
+    rgb(var(--c-hero-hairline) / 0.09) 50%,
+    rgb(var(--c-hero-hairline) / 0.05) 78%,
+    transparent 100%
+  );
+  height: 1px;
+}
+
+/* Premium gradient text for the emphasized word in the headline. */
+.headline-accent {
+  background: linear-gradient(120deg, rgb(var(--c-spark-400)), rgb(var(--c-hero-aurora-2)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* The identity mark gets the only standing glow on the page. */
+.mark-glow {
+  filter: drop-shadow(0 0 18px rgb(var(--c-spark-500) / 0.55)) drop-shadow(0 0 46px rgb(var(--c-spark-500) / 0.22));
+}
+
+/* Focused composer: accent ring + gentle halo. Transition ~200ms. */
+.composer-shell {
+  transition: border-color 180ms ease, box-shadow 200ms ease, background-color 180ms ease;
+}
+.composer-shell:focus-within {
+  border-color: rgb(var(--c-spark-500) / 0.9);
+  box-shadow:
+    0 0 0 1px rgb(var(--c-spark-500) / 0.35),
+    0 8px 40px rgb(var(--c-spark-500) / 0.16),
+    0 18px 50px rgb(var(--c-shadow) / var(--c-shadow-strength));
+}
+
+/* Example-question cards: quiet until hovered. */
+.example-card {
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+.example-card:hover {
+  transform: translateY(-1px);
+}
+.example-card:hover .example-arrow {
+  transform: translateX(2px);
+  color: rgb(var(--c-spark-400));
+}
+.example-arrow {
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .example-card,
+  .example-card:hover .example-arrow {
+    transition: none;
+    transform: none;
+  }
+}

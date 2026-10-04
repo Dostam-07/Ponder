@@ -1,0 +1,268 @@
+data: {"type":"node_created","node":{"id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","canvas_id":"ffb21a5f-56ca-47e6-a01c-90669ccc8bfc","parent_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","branch_origin":"followup_box","status":"answering","title":"","question":"Compare mitosis and meiosis.","answer_text":"","key_terms":[],"suggested_followups":[],"tags":[],"visual":null,"position":{"x":500,"y":300},"width":420,"collapsed":false,"saved_to_library":false,"model_used":"","web_search_used":false,"context_summary":"","mode":"","sources":[],"gaps":[],"material_id":null,"sections":[],"note":"","important":false,"review_state":{"due_at":1789697316991,"interval_days":1,"ease":2.5,"stability":0,"difficulty":0,"last_reviewed_at":null,"times_reviewed":0},"created_at":1789610916991,"updated_at":1789610916991}}
+
+data: {"type":"reset","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"M"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"itos"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"is "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"a"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"nd m"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"eios"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"is a"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"re tw"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"o ways"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" cells "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"d"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ivi"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"de"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":". I"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"n [m"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"it"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"osis"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"], on"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"e cell "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"split"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"s in"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"to two ide"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ntical "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"c"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"opies"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":", like "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ma"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"king a p"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"erfect "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"pho"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"t"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ocopy"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":". T"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"his "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"is ho"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"w you"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"r body"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" gro"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ws and r"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"epairs "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"i"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"tse"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"lf"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":". "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"I"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"n [m"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ei"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"osis"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"], on"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"e cell d"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ivides"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" tw"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ice to p"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"roduc"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"e four"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" cell"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"s th"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"at"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" ar"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"e [genet"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ically "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"u"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ni"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"que] "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"— each ca"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"rryin"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"g ha"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"lf the or"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"iginal instru"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"c"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"tion"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"s. M"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"eiosi"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"s only h"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"app"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ens to "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"create reprod"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"uctive"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"cells, m"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"eaning"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" spe"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"rm a"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"n"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"d egg."}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" Th"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ink "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"of m"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ito"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"sis as c"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"loni"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ng "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"a"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"nd m"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"eio"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"sis as"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" shu"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ff"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ling "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"a d"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"eck of"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" ca"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"rds t"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"o make som"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ethi"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"n"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"g ne"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"w. T"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"he key diff"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ere"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"nce i"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"s th"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"at m"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"itosis pr"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"oduces ide"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ntical"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" cel"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ls for "}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"g"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"rowth,"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" wh"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"i"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"le m"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"eiosis pr"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"oduces d"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"iverse"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":" cel"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"ls for reprod"}
+
+data: {"type":"delta","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","text":"uction"}
+
+data: {"type":"stage2","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","title":"Mitosis vs Meiosis","followups":["How many divisions occur in each process?","Why are meiosis cells genetically unique?","When does the body use mitosis?"],"tags":["cell-division","mitosis","meiosis"]}
+
+data: {"type":"visual_status","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","status":"generating","message":"Creating a visual..."}
+
+data: {"type":"visual_status","node_id":"e4acd0bc-4ef6-48f7-8dc1-2ab8bca735d1","status":"generating","message":"Generating visuals..."}
+

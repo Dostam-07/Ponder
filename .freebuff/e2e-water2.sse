@@ -1,0 +1,292 @@
+data: {"type":"node_created","node":{"id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","canvas_id":"ffb21a5f-56ca-47e6-a01c-90669ccc8bfc","parent_id":null,"branch_origin":"thread","status":"answering","title":"","question":"Explain water and its states.","answer_text":"","key_terms":[],"suggested_followups":[],"tags":[],"visual":null,"position":{"x":0,"y":0},"width":420,"collapsed":false,"saved_to_library":false,"model_used":"","web_search_used":false,"context_summary":"","mode":"","sources":[],"gaps":[],"material_id":null,"sections":[],"note":"","important":false,"review_state":{"due_at":1789696173283,"interval_days":1,"ease":2.5,"stability":0,"difficulty":0,"last_reviewed_at":null,"times_reviewed":0},"created_at":1789609773283,"updated_at":1789609773283}}
+
+data: {"type":"reset","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"Wa"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"te"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"r is a sub"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"stanc"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"e m"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ade "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"of two hy"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"drogen"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" ato"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ms a"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"nd one "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"oxyge"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"n"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" at"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"om."}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" It "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"is th"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"e most "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"common "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"liq"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"uid on"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" Ear"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"th "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"and is ess"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"enti"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"al f"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"or all"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" know"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"n"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" life."}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" Wat"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"er can"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" ex"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ist in"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" three "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"s"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"tates:"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"solid, "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"l"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"iqui"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"d, a"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"n"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"d g"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"as. "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"In its"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" solid"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"state,"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" wa"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ter is "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"call"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"e"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"d ice,"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" which"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" form"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"s when tempe"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"rature"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" dro"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ps low "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"enoug"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"h that mol"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ecule"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"s slo"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"w do"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"wn an"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"d loc"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"k "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"into a"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" rigid str"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"u"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ctu"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"re. "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"In its "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"liquid"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"state,"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" water"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" flo"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ws and"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" tak"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"es the"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" sh"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ape "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"of its con"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ta"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"iner "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"— t"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"his i"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"s w"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"hat we typ"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ically enc"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"o"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"unter"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":". When"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" water"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" he"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ats up "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"e"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"nou"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"gh, it und"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"er"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"go"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"es [evapo"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ra"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"tion], transf"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ormin"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"g "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"into"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" a gas "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ca"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"lled "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"[water"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" v"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"apor],"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" where mol"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ecule"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"s move "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"free"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ly and "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"spread"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"apart"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":". This c"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ycling b"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"etween "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"sta"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"tes is "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"call"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ed"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" the "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"[water"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" c"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"ycle], "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"driven "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"mai"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"nly "}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"by t"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"he"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" sun'"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":"s"}
+
+data: {"type":"delta","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","text":" heat."}
+
+data: {"type":"stage2","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","title":"Water and Its States","followups":["What changes water from liquid to gas?","Why does ice float on liquid water?","How does the water cycle move water?"],"tags":["water","states-of-matter"]}
+
+data: {"type":"visual_status","node_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","status":"generating","message":"Creating a visual..."}
+

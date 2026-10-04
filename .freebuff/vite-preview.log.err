@@ -1,0 +1,7 @@
+npm error Lifecycle script `dev` failed with error:
+npm error code 1
+npm error path C:\Users\dosta\OneDrive\Documents\Ponder\frontend
+npm error workspace @canvas-learn/frontend@0.1.0
+npm error location C:\Users\dosta\OneDrive\Documents\Ponder\frontend
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c vite

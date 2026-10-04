@@ -1,0 +1,70 @@
+data: {"type":"node_created","node":{"id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","canvas_id":"ffb21a5f-56ca-47e6-a01c-90669ccc8bfc","parent_id":"6ed519a0-b3dc-4e0c-8c8a-6feeb69c1fe9","branch_origin":"followup_box","status":"answering","title":"","question":"Why does ice float?","answer_text":"","key_terms":[],"suggested_followups":[],"tags":[],"visual":null,"position":{"x":500,"y":300},"width":420,"collapsed":false,"saved_to_library":false,"model_used":"","web_search_used":false,"context_summary":"","mode":"","sources":[],"gaps":[],"material_id":null,"sections":[],"note":"","important":false,"review_state":{"due_at":1789696739892,"interval_days":1,"ease":2.5,"stability":0,"difficulty":0,"last_reviewed_at":null,"times_reviewed":0},"created_at":1789610339892,"updated_at":1789610339892}}
+
+data: {"type":"reset","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a"}
+
+data: {"type":"reset","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a"}
+
+data: {"type":"reset","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":"Ice"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" floats"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" because"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" it"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":"'s"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" less"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" dense"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" than"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" liquid"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" water"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":"."}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" When"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" water"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" freezes"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":","}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" the"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" molecules"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" spread"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" out"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":","}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" creating"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" a"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" structure"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" with"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" more"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" space"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" between"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" them"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":"."}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" This"}
+
+data: {"type":"delta","node_id":"dd09cdd5-45c6-452e-bf63-7b852e445d8a","text":" makes"}
+

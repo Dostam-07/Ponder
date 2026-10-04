@@ -1,0 +1,6 @@
+data: {"type":"node_created","node":{"id":"5e13c111-d7e9-411a-9457-cfb0d20cf5ea","canvas_id":"9664d4f8-ac7d-4ef9-bb83-e8b30ce22c63","parent_id":null,"branch_origin":"thread","status":"answering","title":"","question":"Explain water and its states.","answer_text":"","key_terms":[],"suggested_followups":[],"tags":[],"visual":null,"position":{"x":0,"y":0},"width":420,"collapsed":false,"saved_to_library":false,"model_used":"","web_search_used":false,"context_summary":"","mode":"","sources":[],"gaps":[],"material_id":null,"sections":[],"note":"","important":false,"review_state":{"due_at":1789695609280,"interval_days":1,"ease":2.5,"stability":0,"difficulty":0,"last_reviewed_at":null,"times_reviewed":0},"created_at":1789609209280,"updated_at":1789609209280}}
+
+data: {"type":"reset","node_id":"5e13c111-d7e9-411a-9457-cfb0d20cf5ea"}
+
+data: {"type":"reset","node_id":"5e13c111-d7e9-411a-9457-cfb0d20cf5ea"}
+

@@ -1,0 +1,150 @@
+data: {"type":"node_created","node":{"id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","canvas_id":"ffb21a5f-56ca-47e6-a01c-90669ccc8bfc","parent_id":null,"branch_origin":"thread","status":"answering","title":"","question":"Why is the sky blue?","answer_text":"","key_terms":[],"suggested_followups":[],"tags":[],"visual":null,"position":{"x":500,"y":0},"width":420,"collapsed":false,"saved_to_library":false,"model_used":"","web_search_used":false,"context_summary":"","mode":"","sources":[],"gaps":[],"material_id":null,"sections":[],"note":"","important":false,"review_state":{"due_at":1789696286187,"interval_days":1,"ease":2.5,"stability":0,"difficulty":0,"last_reviewed_at":null,"times_reviewed":0},"created_at":1789609886187,"updated_at":1789609886187}}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":"The"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" sky"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" appears"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" blue"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" because"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" of"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" a"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" process"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" called"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" scattering"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":"."}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" Sun"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":"light"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":","}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" which"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" is"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" made"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" up"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" of"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" different"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" colors"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":","}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" hits"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" Earth"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":"'s"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" atmosphere"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":"."}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" Each"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" color"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" sc"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":"atters"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" differently"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":";"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" blue"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" and"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" green"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" scatter"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" more"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" than"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" others"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":"."}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" Because"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" the"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" human"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" eye"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" is"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" more"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" sensitive"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" to"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" blue"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" and"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" less"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" to"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" green"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":","}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" the"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" sky"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" looks"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" predominantly"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" blue"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":"."}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" This"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" is"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" why"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" the"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" sky"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" is"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" blue"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" during"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" clear"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":" days"}
+
+data: {"type":"delta","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","text":"."}
+
+data: {"type":"stage2","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","title":"Why is the Sky Blue?","followups":["How does the atmosphere affect sunlight?","Why don't we see the sun when it's bright outside?","What happens to the light when it enters the Earth's atmosphere?"],"tags":["astronomy","light","atmosphere"]}
+
+data: {"type":"visual_status","node_id":"d6d1d13d-ee1c-4eed-99ca-befc4f9e5a3b","status":"generating","message":"Creating a visual..."}
+

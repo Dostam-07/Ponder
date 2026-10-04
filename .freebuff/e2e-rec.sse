@@ -1,0 +1,300 @@
+data: {"type":"node_created","node":{"id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","canvas_id":"ffb21a5f-56ca-47e6-a01c-90669ccc8bfc","parent_id":null,"branch_origin":"thread","status":"answering","title":"","question":"What is recursion?","answer_text":"","key_terms":[],"suggested_followups":[],"tags":[],"visual":null,"position":{"x":1000,"y":0},"width":420,"collapsed":false,"saved_to_library":false,"model_used":"","web_search_used":false,"context_summary":"","mode":"","sources":[],"gaps":[],"material_id":null,"sections":[],"note":"","important":false,"review_state":{"due_at":1789696940696,"interval_days":1,"ease":2.5,"stability":0,"difficulty":0,"last_reviewed_at":null,"times_reviewed":0},"created_at":1789610540696,"updated_at":1789610540696}}
+
+data: {"type":"reset","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"[Rec"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"u"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"rsi"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"on"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"] is a c"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"oncept"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" where som"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"eth"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ing is d"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"efined"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" u"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"sing a s"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"impler v"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ers"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ion of "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"i"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"tself. I"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"magine l"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ook"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"in"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"g up "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"a w"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"or"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"d in a dict"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"i"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"onar"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"y, a"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"nd the defi"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"nitio"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"n uses a"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"nothe"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"r wor"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"d that"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" nee"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ds i"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ts own defi"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ni"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"tion "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"— that"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" ch"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ain of defin"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"itions r"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ely"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ing o"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"n each"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" ot"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"her is s"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"imi"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"lar "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"to how rec"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ursion"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"wor"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ks. In com"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"p"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ut"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ing, a rec"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ursive fu"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"nct"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"io"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"n is"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" a "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"set of instru"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ction"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"s that"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" calls "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"its"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"elf to"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" s"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"olve a s"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"maller"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" pi"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ece "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"of th"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"e same p"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"r"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"oblem."}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" Every rec"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ursive p"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"rocess"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" n"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ee"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ds a"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" [bas"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"e "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"case],"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" wh"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ich "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"is the si"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"mplest v"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ersio"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"n th"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"at "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"can be an"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"swered di"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"rectly w"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ithout f"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"urthe"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"r "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"self-c"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"a"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"lling. W"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"it"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"hout "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"a bas"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"e"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" cas"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"e, the fu"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"nction"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" woul"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"d keep c"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"alling "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"itself f"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"o"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"rever, cr"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"eat"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ing an in"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"finit"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"e"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" loop."}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" Th"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ink"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" of i"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"t like R"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ussian n"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"esting"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" d"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"olls "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"— ea"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ch one co"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"nt"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ains a s"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"maller v"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ersion "}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"inside"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" unt"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"il you"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" rea"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ch the sm"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"a"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"lles"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"t, inn"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"ermos"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":"t"}
+
+data: {"type":"delta","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","text":" doll."}
+
+data: {"type":"stage2","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","title":"Understanding Recursion","followups":["What is a base case?","What is a recursive case?","Can you give a recursion example?"],"tags":["recursion","programming","algorithms"]}
+
+data: {"type":"visual_status","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","status":"generating","message":"Creating a visual..."}
+
+data: {"type":"visual_status","node_id":"0824df0d-5867-4cdc-b62b-ae2b850de38b","status":"generating","message":"Generating visuals..."}
+

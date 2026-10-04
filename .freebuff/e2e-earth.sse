@@ -1,0 +1,84 @@
+data: {"type":"node_created","node":{"id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","canvas_id":"ffb21a5f-56ca-47e6-a01c-90669ccc8bfc","parent_id":null,"branch_origin":"thread","status":"answering","title":"","question":"What would happen if Earth stopped rotating?","answer_text":"","key_terms":[],"suggested_followups":[],"tags":[],"visual":null,"position":{"x":1500,"y":0},"width":420,"collapsed":false,"saved_to_library":false,"model_used":"","web_search_used":false,"context_summary":"","mode":"","sources":[],"gaps":[],"material_id":null,"sections":[],"note":"","important":false,"review_state":{"due_at":1789697557169,"interval_days":1,"ease":2.5,"stability":0,"difficulty":0,"last_reviewed_at":null,"times_reviewed":0},"created_at":1789611157170,"updated_at":1789611157170}}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":"If"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" Earth"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" stopped"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" rotating"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":","}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" we"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":"'d"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" experience"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" ["}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":"ext"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":"reme"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":"]"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" day"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" and"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" night"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" cycles"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":"."}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" Normally"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":","}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" rotation"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" mixes"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" air"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" and"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" ocean"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" currents"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":","}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" but"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" without"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" it"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":","}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" winds"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" would"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" blow"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" in"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" one"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" direction"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":","}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" and"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" oceans"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" would"}
+
+data: {"type":"delta","node_id":"3c1367ad-89c0-44bc-bcf3-c579821e16a7","text":" form"}
+
