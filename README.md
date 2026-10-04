@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/screenshots/icon.png" alt="Ponder icon" width="96" height="96" />
+
 # Ponder
 
 **The place where a question turns into an exploration, and an exploration turns into understanding.**
